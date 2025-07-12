@@ -27,6 +27,31 @@ const getPersonById = (dataModel) => (req, res, next) => {
         })
 }
 
+const createNewPerson = (dataModel) => (req, res, next) => {
+    console.log("Create New Person");
+    console.log(req.body);
+    dataModel.createNewPerson(req.body)
+        .then(newPerson => {
+            res.json({
+                success: true,
+                data: newPerson,
+                message: "Person created successfully"
+            });
+        })
+        .catch(error => {
+            res.status(500).json({
+                success: false,
+                data: error,
+                error: {
+                    code: "FAILED",
+                    message: "Failed to create person"
+                }
+            });
+        }
+    );
+}
+
 module.exports = {
-    getPersonById
+    getPersonById,
+    createNewPerson
 }

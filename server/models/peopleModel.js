@@ -22,6 +22,8 @@ const mockPeople = [{
     name: "mary major"
 }];
 
+let nextId = 4;
+
 function getPersonById(id) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -30,6 +32,22 @@ function getPersonById(id) {
     });
 }
 
+function createNewPerson(newPersonData) {
+    const newPerson = {
+        id: nextId++,
+        ...newPersonData
+    };
+
+    mockPeople.push(newPerson);
+    
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(newPerson);
+        }, 1000);
+    });
+} 
+
 module.exports = {
-    getPersonById
+    getPersonById,
+    createNewPerson
 }

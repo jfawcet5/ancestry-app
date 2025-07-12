@@ -14,4 +14,7 @@ function inject(handler, dependency) {
 // GET /api/people/:id
 peopleRouter.get("/:id", inject(peopleController.getPersonById, peopleModel));
 
+// POST /api/people/
+peopleRouter.post("/", inject(peopleController.createNewPerson, peopleModel));
+
 module.exports = peopleRouter;
