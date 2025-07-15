@@ -1,6 +1,7 @@
 // function that takes a data model (DI) and returns an express middleware
 // function that uses the data model to retrieve the correct data. 
 const getPersonById = (dataModel) => (req, res, next) => {
+    console.log("Get Person By Id");
     console.log(req.params);
     dataModel.getPersonById(req.params.id)
         .then(person => {
@@ -51,7 +52,36 @@ const createNewPerson = (dataModel) => (req, res, next) => {
     );
 }
 
+const getPeopleList = (dataModel) => (req, res, next) => {
+    console.log("GET /api/people/");
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    dataModel.getPeopleList(page, limit)
+        .then(result => {
+            console.log(result);
+            res.json({
+                success: true,
+                data: result.data,
+                meta: result.meta,
+                message: "Success"
+            });
+        })
+        .catch(error => {
+            res.status(500).json({
+                success: false,
+                data: error,
+                error: {
+                    code: "FAILED",
+                    message: "Failed to create person list"
+                }
+            });
+        }
+    );
+}
+
 module.exports = {
     getPersonById,
-    createNewPerson
+    createNewPerson,
+    getPeopleList
 }
