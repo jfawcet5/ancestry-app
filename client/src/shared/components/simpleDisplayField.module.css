@@ -1,0 +1,25 @@
+.container {
+    display: grid;
+}
+
+.container-labeled {
+    grid-template-columns: 1fr 4fr;
+    gap: 0.5rem;
+}
+
+.container-single {
+    grid-template-columns: 1fr;
+}
+
+.display-field-label {
+    white-space: nowrap;
+}
+
+.display-field-main {
+    font-size: 1rem;
+}
+
+.display-field-sub {
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}

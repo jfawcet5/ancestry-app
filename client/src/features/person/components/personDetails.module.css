@@ -1,0 +1,31 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    grid-template-areas: "banner banner"
+                        "left-column right-column";
+    grid-template-rows: auto 1fr;
+    width: 100%;
+    background-color: #50B0F0;
+}
+
+.banner {
+    grid-area: banner;
+    text-align: center;
+    margin: 0;
+    padding: 0.5rem
+}
+
+.leftColumn {
+    grid-area: left-column;
+}
+
+.rightColumn {
+    grid-area: right-column;
+}
+
+.flexDetails {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}

@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
-import Navbar from './components/Navbar.js';
+import Navbar from './shared/components/Navbar.js';
 
 import HomePage from './pages/homePage.js';
 import SearchPage from './pages/searchPage.js';
 import PersonForm from "./pages/addPersonPage.js";
-import ViewPersonPage from './pages/viewPersonPage.js';
+import ViewPersonPage from './features/person/pages/viewPersonPage.js';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 

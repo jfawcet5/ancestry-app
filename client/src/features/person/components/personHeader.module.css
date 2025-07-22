@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    gap: 1rem
+}
+
+.portrait {
+    width: 250px;
+    height: 250px;
+    border: 1px solid black;
+    display: flex;
+    flex: none;
+}
+
+.portrait img {
+    width: 100%;
+}
