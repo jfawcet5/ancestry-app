@@ -24,7 +24,7 @@ const getPersonById = (dataModel) => (req, res, next) => {
                     message: "Person not found"
                 }
             }
-            res.status(500).send(response);
+            res.status(404).send(response);
         })
 }
 

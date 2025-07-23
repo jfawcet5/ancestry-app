@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 
 const PersonForm = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     birthDate: '',
     deathDate: ''
   });
@@ -34,7 +35,7 @@ const PersonForm = () => {
 
       const result = await response.json();
       setMessage(`Successfully created person with ID: ${result.data.id}`);
-      setFormData({ name: '', birthDate: '', deathDate: '' });
+      setFormData({ firstName: '', lastName: '', birthDate: '', deathDate: '' });
     } catch (error) {
       setMessage(error.message);
     }
@@ -45,11 +46,21 @@ const PersonForm = () => {
       <h2>Create a New Person</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Name: </label>
+          <label>First Name: </label>
           <input 
             type="text" 
-            name="name" 
-            value={formData.name}
+            name="firstName" 
+            value={formData.firstName}
+            onChange={handleChange}
+            required 
+          />
+        </div>
+        <div>
+          <label>Last Name: </label>
+          <input 
+            type="text" 
+            name="lastName" 
+            value={formData.lastName}
             onChange={handleChange}
             required 
           />

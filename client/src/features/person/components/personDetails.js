@@ -30,6 +30,7 @@ export default function PersonDetails({personData}) {
                 />
             <SimpleDisplayField label="Father" 
                                 mainText={personData.father.name}
+                                mainLink={`/people/${personData.father.id}`}
                 />
             </div>
         </div>

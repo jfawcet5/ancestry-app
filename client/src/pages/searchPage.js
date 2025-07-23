@@ -23,7 +23,7 @@ function SearchPage() {
             <p>Results:</p>
             <ul>{data.map(item => 
                 <li key={item.id}>
-                    <Link to={`/people/${item.id}`}>{item.name}</Link>
+                    <Link to={`/people/${item.id}`}>{`${item.name.first} ${item.name.last}`}</Link>
                 </li>)}
             </ul>
         </div>
