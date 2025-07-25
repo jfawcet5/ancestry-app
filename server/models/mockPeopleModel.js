@@ -30,6 +30,15 @@ const mockPeople = [{
         }, {
             id: 100,
             name: "Luke Lee"
+        },{
+            id: 101,
+            name: "Billy Lee"
+        },{
+            id: 102,
+            name: "Tommy Lee"
+        },{
+            id: 103,
+            name: "George Lee"
         }]
     },
 }, {
@@ -52,7 +61,10 @@ const mockPeople = [{
         },
         spouses: [{
             id: 3,
-            name: "Jack Doe"
+            name: "Jack Doe",
+            dates: {
+                start: "1938"
+            }
         }],
         siblings: [],
         children: [{
@@ -152,7 +164,7 @@ const mockPeople = [{
     },
 }];
 
-let nextId = 4;
+let nextId = 6;
 
 function getPersonById(id) {
     return new Promise((resolve, reject) => {

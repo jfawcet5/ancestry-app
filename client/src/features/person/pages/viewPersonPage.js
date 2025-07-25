@@ -12,6 +12,7 @@ function ViewPersonPage() {
     const [personData, setPersonData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
         // Reset state each time a new ID is fetched.
@@ -85,9 +86,10 @@ function ViewPersonPage() {
     console.log(`id: ${id}`);
     return (
         <PageLayout>
-            <PersonHeader personData={headerData}/>
+            <PersonHeader personData={headerData} editMode={isEditMode}/>
             <RelationSection relations={personData.relations} />
             <p>{JSON.stringify(personData)}</p>
+            <button className="edit-mode-button" onClick={() => {setIsEditMode(!isEditMode)}}>Edit</button>
         </PageLayout>
     );
 }

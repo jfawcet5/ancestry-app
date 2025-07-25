@@ -1,25 +1,29 @@
 .container {
-    display: grid;
-}
-
-.container-labeled {
-    grid-template-columns: 1fr 4fr;
-    gap: 0.5rem;
-}
-
-.container-single {
-    grid-template-columns: 1fr;
+    display: flex;
+    row-gap: 0.25rem;
+    column-gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .display-field-label {
     white-space: nowrap;
 }
 
-.display-field-main {
+.displayFieldMain {
     font-size: 1rem;
+    margin: 0;
 }
 
-.display-field-sub {
+.displayFieldSub {
     font-size: 0.9rem;
     margin-top: 0.25rem;
+}
+
+.contentContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.contentContainer p {
+    margin: 0;
 }

@@ -10,13 +10,16 @@
     border: solid 1px black;
     border-radius: 2rem;
     overflow: hidden;
+    padding: 0.25rem 0.75rem;
 }
 
 .banner {
     grid-area: banner;
     text-align: center;
+    justify-content: center;
     margin: 0;
-    padding: 0.5rem
+    padding: 0.25rem;
+    display: flex;
 }
 
 .leftColumn {
