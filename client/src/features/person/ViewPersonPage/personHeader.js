@@ -7,7 +7,7 @@ function PersonHeader({personData, editMode=false}) {
     return (
         <div className={styles.container}>
         <PersonPortrait className={styles.portrait} src={personData.portrait}/>
-        <PersonDetails personData={personData} editMode={editMode}/>
+        <PersonDetails className={styles.details} personData={personData} editMode={editMode}/>
         </div>
     );
 }

@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    gap: 2rem;
+    width: 100%
+}
+
+.container > div {
+    flex: 1;
+}
+
+/* Desktops */
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1200px;
+        align-self: center;
+    }
+  }

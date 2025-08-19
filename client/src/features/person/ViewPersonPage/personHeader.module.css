@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    gap: 1rem
+}
+
+.portrait {
+    min-width: 250px;
+    min-height: 250px;
+    border: 1px solid black;
+    display: flex;
+    flex: 1 1;
+    border-radius: 25%;
+    overflow: hidden;
+}
+
+.portrait img {
+    width: 100%;
+}
+
+.details {
+    flex: 1 1;
+}
+
+@media (min-width: 1280px) {
+    .container {
+        width: 100%;
+        max-width: 1000px;
+        align-self: center;
+    }
+  }

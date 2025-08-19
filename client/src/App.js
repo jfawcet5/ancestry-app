@@ -5,10 +5,12 @@ import './App.css';
 
 import Navbar from './shared/components/Navbar.js';
 
+import PageLayout from './shared/components/pageLayout.js';
+
 import HomePage from './pages/homePage.js';
 import SearchPage from './pages/searchPage.js';
-import PersonForm from "./pages/addPersonPage.js";
-import ViewPersonPage from './features/person/pages/viewPersonPage.js';
+import ViewPersonPage from './features/person/ViewPersonPage/index.js';
+import CreatePersonPage from './features/person/CreatePersonPage/index.js';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
@@ -16,14 +18,14 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div>
+      <PageLayout>
         <Routes>
           <Route path="/" element={<HomePage />}/>
           <Route path="/search" element={<SearchPage />}/>
           <Route path="/people/:id" element={<ViewPersonPage />}/>
-          <Route path="/create" element={<PersonForm />}/>
+          <Route path="/create" element={<CreatePersonPage />}/>
         </Routes>
-      </div>
+      </PageLayout>
     </Router>
   );
 }

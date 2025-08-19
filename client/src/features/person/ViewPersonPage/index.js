@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import PageLayout from "../../../shared/components/pageLayout.js";
-import PersonHeader from "../components/personHeader.js";
-import RelationSection from '../components/relationSection.js';
+// Temporary
+import SearchSelector from '../../../shared/components/SearchSelector.js';
+import ViewPersonPresentation from './presentation.js';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
@@ -13,11 +13,16 @@ function ViewPersonPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [formData, setFormData] = useState({});
+
+    // Temporary
+    const [open, setOpen] = useState(true);
 
     useEffect(() => {
         // Reset state each time a new ID is fetched.
         setLoading(true);
         setError(null);
+        setIsEditMode(false);
 
         // For aborting stale fetch calls.
         const controller = new AbortController();
@@ -48,6 +53,12 @@ function ViewPersonPage() {
             controller.abort();
         };
     }, [id]);
+
+    const handleSave = () => {
+        console.log("save form data");
+
+        setIsEditMode(false);
+    }
 
     if (loading || !personData) {
         return <p>Loading...</p>
@@ -84,13 +95,16 @@ function ViewPersonPage() {
 
     console.log("return");
     console.log(`id: ${id}`);
+
     return (
-        <PageLayout>
-            <PersonHeader personData={headerData} editMode={isEditMode}/>
-            <RelationSection relations={personData.relations} />
-            <p>{JSON.stringify(personData)}</p>
-            <button className="edit-mode-button" onClick={() => {setIsEditMode(!isEditMode)}}>Edit</button>
-        </PageLayout>
+        <>
+            <ViewPersonPresentation personData={personData}
+                                    headerData={headerData}
+                                    isEditMode={isEditMode}
+                                    setIsEditMode={setIsEditMode}
+                                    handleSave={handleSave}
+            />
+        </>
     );
 }
 

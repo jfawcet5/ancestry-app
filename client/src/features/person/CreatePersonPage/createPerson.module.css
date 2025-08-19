@@ -1,0 +1,22 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    border: solid 1px black;
+    border-radius: 1rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 3rem;
+}
+
+
+.fieldContainer {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.inputField {
+    display: flex;
+    flex-direction: column;
+}

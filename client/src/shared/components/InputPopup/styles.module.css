@@ -1,0 +1,9 @@
+.valueField {
+    border: solid 1px black;
+    padding: 0.1rem 0.25rem;
+    width: fit-content;
+}
+
+.valueField:hover {
+    cursor: pointer;
+}
