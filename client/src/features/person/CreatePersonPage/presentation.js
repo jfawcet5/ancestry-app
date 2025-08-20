@@ -28,7 +28,7 @@ export default function CreatePersonPresentation({onChange, onSubmit}) {
                 <div className={styles.fieldContainer}>
                     <div className={styles.inputField}>
                         <label>Birth Date</label>
-                        <input type="text" name="birthDate" onChange={onChange} required></input>
+                        <input type="month" name="birthDate" onChange={onChange} required></input>
                     </div>
                     <div className={styles.inputField}>
                         <label>Death Date</label>

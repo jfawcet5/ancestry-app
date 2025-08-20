@@ -11,6 +11,7 @@ import HomePage from './pages/homePage.js';
 import SearchPage from './pages/searchPage.js';
 import ViewPersonPage from './features/person/ViewPersonPage/index.js';
 import CreatePersonPage from './features/person/CreatePersonPage/index.js';
+import SearchPersonPage from './features/person/SearchPersonPage/index.js';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
@@ -21,7 +22,7 @@ function App() {
       <PageLayout>
         <Routes>
           <Route path="/" element={<HomePage />}/>
-          <Route path="/search" element={<SearchPage />}/>
+          <Route path="/search" element={<SearchPersonPage />}/>
           <Route path="/people/:id" element={<ViewPersonPage />}/>
           <Route path="/create" element={<CreatePersonPage />}/>
         </Routes>

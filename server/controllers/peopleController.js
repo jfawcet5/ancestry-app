@@ -54,10 +54,16 @@ const createNewPerson = (dataModel) => (req, res, next) => {
 
 const getPeopleList = (dataModel) => (req, res, next) => {
     console.log("GET /api/people/");
+    console.log(req.query);
+    const filters = {
+        firstName: req.query.firstName || null,
+        lastName: req.query.lastName || null,
+    };
+    console.log("filters: ", filters)
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
-    dataModel.getPeopleList(page, limit)
+    dataModel.getPeopleList(page, limit, filters)
         .then(result => {
             console.log(result);
             res.json({

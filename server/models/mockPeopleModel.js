@@ -212,13 +212,31 @@ function createNewPerson(newPersonData) {
     });
 }
 
-function getPeopleList(page, limit) {
+function getPeopleList(page, limit, filters) {
     console.log("Datamodel: Get people list");
     const startIndex = Math.min(page - 1, 0) * limit;
     const endIndex = startIndex + limit;
 
-    const peopleData = mockPeople.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(mockPeople.length / limit );
+    let filteredData = mockPeople;
+
+    /*
+    filteredData = filteredData.filter(person => !filters.firstName || 
+        person.name.first.toLowerCase().includes(filters.firstName.toLowerCase())
+    );
+    */
+
+    filteredData = filteredData.filter(person => {
+            return !filters.firstName || person.name.first.toLowerCase().includes(filters.firstName.toLowerCase());
+        }
+    );
+
+    filteredData = filteredData.filter(person => {
+        return !filters.lastName || person.name.last.toLowerCase().includes(filters.lastName.toLowerCase());
+    }
+);
+
+    const peopleData = filteredData.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(filteredData.length / limit );
 
     const people = peopleData.map((element, index) => {
         return {
@@ -235,7 +253,7 @@ function getPeopleList(page, limit) {
             page: page,
             limit: limit,
             totalPages: totalPages,
-            totalCount: mockPeople.length
+            totalCount: filteredData.length
         }
     }
 
