@@ -4,8 +4,8 @@ import SimpleDisplayField from "../../../shared/components/simpleDisplayField";
 import EditableText from "../../../shared/components/editableText";
 import InputPopup from "../../../shared/components/InputPopup";
 
-export default function PersonDetails({personData, editMode=false}) {
-    const fullname = `${personData.firstName} ${personData.lastName}`;
+export default function PersonDetails({personData, editMode=false, onSelect}) {
+    const fullname = `${personData.firstName} ${personData.middleName} ${personData.lastName}`;
 
     const isEditable = false;
 
@@ -46,12 +46,12 @@ export default function PersonDetails({personData, editMode=false}) {
             </div>
             <div className={`${styles.leftColumn} ${styles.flexDetails}`}>
                 <SimpleDisplayField label="Born" >
-                    <EditableText text={personData.birth.date}
+                    <EditableText text={personData.birthDate}
                                   isEditable={editMode}
                                   inputType="date"
                                   inputName="birthDate"
                     />
-                    <EditableText text={personData.birth.location}
+                    <EditableText text={personData.birthLocation}
                                   isEditable={editMode}
                                   inputType="text"
                                   inputName="birthLocation"
@@ -59,12 +59,12 @@ export default function PersonDetails({personData, editMode=false}) {
                 </SimpleDisplayField>
 
                 <SimpleDisplayField label="Died">
-                    <EditableText text={personData.death.date}
+                    <EditableText text={personData.deathDate}
                                   isEditable={editMode}
                                   inputType="date"
                                   inputName="deathDate"
                     />
-                    <EditableText text={personData.death.location}
+                    <EditableText text={personData.deathLocation}
                                   isEditable={editMode}
                                   inputType="text"
                                   inputName="deathLocation"
@@ -72,12 +72,12 @@ export default function PersonDetails({personData, editMode=false}) {
                 </SimpleDisplayField>
 
                 {personData.burial && <SimpleDisplayField label="Burial">
-                        <EditableText text={personData.burial.name}
+                        <EditableText text={"null"}
                                     isEditable={editMode}
                                     inputType="text"
                                     inputName="burialName"
                         />
-                        <EditableText text={personData.burial.location}
+                        <EditableText text={"null"}
                                     isEditable={editMode}
                                     inputType="text"
                                     inputName="burialLocation"
@@ -96,6 +96,8 @@ export default function PersonDetails({personData, editMode=false}) {
                     />}
                     {editMode && <InputPopup value={personData.mother.name}
                                              label={`Associate Mother to ${personData.firstName} ${personData.lastName}`}
+                                             inputType="Person"
+                                             onSelect={(value) => onSelect("mother", value)}
                                 />}
                 </SimpleDisplayField>
 
@@ -109,6 +111,7 @@ export default function PersonDetails({personData, editMode=false}) {
                     {editMode && <InputPopup value={personData.father.name}
                                              label={`Associate Father to ${personData.firstName} ${personData.lastName}`}
                                              inputType="Person"
+                                             onSelect={(value) => onSelect("father", value)}
                                 />}
                 </SimpleDisplayField>
             </div>

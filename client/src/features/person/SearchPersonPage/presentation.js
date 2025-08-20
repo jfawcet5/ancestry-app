@@ -10,7 +10,25 @@ const ENDPOINT = process.env.REACT_APP_API_URL;
 export default function SearchPersonPresentation({searchResults, 
                                                   searchFilters,
                                                   onChange,
-                                                  onSubmit}) {
+                                                  onSubmit,
+                                                  pageType,
+                                                  onSelect}) {
+    let resultsList = null;
+
+    if (pageType == "modal") {
+        resultsList = searchResults.map(person => (
+            <li key={person.id}>
+                <button onClick={(e) => onSelect(e, person)}>{`${person.name}`}</button>
+            </li>
+        ));
+    }
+    else {
+        resultsList = searchResults.map(person => (
+            <li key={person.id}>
+                <Link to={`/people/${person.id}`}>{`${person.name.first} ${person.name.last}`}</Link>
+            </li>
+        ));
+    }
 
     return (
         <>
@@ -25,11 +43,7 @@ export default function SearchPersonPresentation({searchResults,
 
                 <div className={styles.searchResultsContainer}>
                     <ul>
-                        {searchResults.map(person => (
-                            <li key={person.id}>
-                                <Link to={`/people/${person.id}`}>{`${person.name.first} ${person.name.last}`}</Link>
-                            </li>
-                        ))}
+                        {resultsList}
                     </ul>
                 </div>
             </div>

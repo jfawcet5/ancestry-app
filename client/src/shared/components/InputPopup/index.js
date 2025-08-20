@@ -2,13 +2,16 @@ import React, {useCallback, useState} from "react";
 import PopupModal from "../PopupModal";
 
 import {TabController, Tab} from "../TabController/index.js";
+
 import CreatePersonPage from "../../../features/person/CreatePersonPage/index.js";
+import SearchPersonPage from "../../../features/person/SearchPersonPage/index.js";
 
 import styles from "./styles.module.css";
 
 export default function InputPopup({label = "Edit",
                                     value,
-                                    inputType
+                                    inputType,
+                                    onSelect
 }) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -25,12 +28,19 @@ export default function InputPopup({label = "Edit",
 
     let content = <></>
 
+    const handleSelect = (e, value) => {
+        e.preventDefault();
+        console.log("Selected an item: ", value);
+        onSelect(value);
+        setIsOpen(false);
+    }
+
     switch(inputType) {
         case "Person":
             content = (
                 <TabController>
                     <Tab name="Search">
-                        <p>Find person</p>
+                        <SearchPersonPage pageType="modal" onSelect={handleSelect}/>
                     </Tab>
                     <Tab name="Create">
                         <CreatePersonPage />

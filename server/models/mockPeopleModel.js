@@ -5,8 +5,14 @@ const mockPeople = [{
         middle: "",
         last: "Doe"
     },
-    birth: "1940",
-    death: "1980",
+    birth: {
+        date: "1940",
+        location: null
+    },
+    death: {
+        date: "1980",
+        location: null
+    },
     relations: {
         mother: {
             id: 2,
@@ -48,8 +54,14 @@ const mockPeople = [{
         middle: "",
         last: "Major"
     },
-    birth: "1920",
-    death: "1960",
+    birth: {
+        date: "1920",
+        location: null
+    },
+    death: {
+        date: "1960",
+        location: null
+    },
     relations: {
         mother: {
             id: 20,
@@ -82,8 +94,14 @@ const mockPeople = [{
         middle: "",
         last: "Doe"
     },
-    birth: "1910",
-    death: "1970",
+    birth: {
+        date: "1910",
+        location: null
+    },
+    death: {
+        date: "1970",
+        location: null
+    },
     relations: {
         mother: {
             id: 21,
@@ -113,8 +131,14 @@ const mockPeople = [{
         middle: "",
         last: "Doe"
     },
-    birth: "1945",
-    death: "1985",
+    birth: {
+        date: "1945",
+        location: null
+    },
+    death: {
+        date: "1985",
+        location: null
+    },
     relations: {
         mother: {
             id: 2,
@@ -138,8 +162,14 @@ const mockPeople = [{
         middle: "",
         last: "Lee"
     },
-    birth: "1942",
-    death: "1982",
+    birth: {
+        date: "1942",
+        location: null
+    },
+    death: {
+        date: "1982",
+        location: null
+    },
     relations: {
         mother: {
             id: 2,
@@ -183,7 +213,7 @@ function createNewPerson(newPersonData) {
         id: nextId++,
         name: {
             first: newPersonData.firstName,
-            middle: '',
+            middle: newPersonData.middleName,
             last: newPersonData.lastName
         },
         birth: newPersonData.birthDate,

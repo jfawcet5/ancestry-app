@@ -5,18 +5,19 @@ import { useParams } from 'react-router-dom';
 import SearchSelector from '../../../shared/components/SearchSelector.js';
 import ViewPersonPresentation from './presentation.js';
 
+import { transformPersonData } from '../../../shared/utilities/transform.js';
+
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
 function ViewPersonPage() {
     const { id } = useParams();
     const [personData, setPersonData] = useState(null);
+    const [formData, setFormData] = useState(null); // editable copy of person data
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [formData, setFormData] = useState({});
 
-    // Temporary
-    const [open, setOpen] = useState(true);
+    const [activeField, setActiveField] = useState("");
 
     useEffect(() => {
         // Reset state each time a new ID is fetched.
@@ -38,7 +39,9 @@ function ViewPersonPage() {
             })
             .then(jsonData => {
                 setLoading(false);
-                setPersonData(jsonData.data);
+                setPersonData(transformPersonData(jsonData.data));
+                setFormData(transformPersonData(jsonData.data));
+                console.log("successfully loaded data from API");
             })
             .catch((error) => {
                 console.error(`Failed to load person: ${id}`, error);
@@ -60,6 +63,24 @@ function ViewPersonPage() {
         setIsEditMode(false);
     }
 
+    const handleCancel = () => {
+        console.log("Handle Cancel");
+        setFormData(personData);
+        setIsEditMode(false);
+    }
+
+    const handleSelect = (field, value) => {
+        console.log("Handle Select new Value");
+        console.log(`Field: ${field}, value:`);
+        console.log(value);
+        console.log("Old value: ");
+        console.log(formData.father);
+        setFormData(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    }
+
     if (loading || !personData) {
         return <p>Loading...</p>
     }
@@ -67,42 +88,17 @@ function ViewPersonPage() {
         return <p>{error}</p>
     }
 
-    //const names = personData.name.split(" ");
-    //const first = names[0];
-    //const middle = names.length > 2 ? "": names[1];
-    //const last = names.length > 2 ? names[2]: names[1];
-
-    const headerData = {
-        firstName: personData.name.first,
-        middleName: personData.name.middle,
-        lastName: personData.name.last,
-        portrait: null,
-        birth: {
-            date: personData.birth,
-            location: "Salem, OR"
-        },
-        death: {
-            date: personData.death,
-            location: "Portland, OR"
-        },
-        burial: {
-            name: "Zion Memorial Park",
-            location: "Canby, OR"
-        },
-        mother: personData.relations.mother,
-        father: personData.relations.father
-    };
-
     console.log("return");
     console.log(`id: ${id}`);
 
     return (
         <>
-            <ViewPersonPresentation personData={personData}
-                                    headerData={headerData}
+            <ViewPersonPresentation personData={formData}
                                     isEditMode={isEditMode}
                                     setIsEditMode={setIsEditMode}
                                     handleSave={handleSave}
+                                    onSelect={handleSelect}
+                                    onCancel={handleCancel}
             />
         </>
     );

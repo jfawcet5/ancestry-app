@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 
 import SearchPersonPresentation from './presentation';
 
+import { transformSearchResult } from '../../../shared/utilities/transform';
+
 import styles from "./SearchPerson.module.css";
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
-export default function SearchPersonPage() {
+export default function SearchPersonPage({pageType = "page", onSelect}) {
 
     const [searchFilters, setSearchFilters] = useState({});
     const [searchResults, setSearchResults] = useState([]);
@@ -35,7 +37,18 @@ export default function SearchPersonPage() {
                 return response.json();
             })
             .then(jsonData => {
-                setSearchResults(jsonData.data);
+                if (pageType === "modal") {
+                    setSearchResults(jsonData.data.map((item) => ({
+                        id: item.id,
+                        name: `${item.name.first} ${item.name.last}`
+                    })));
+                    console.log(searchResults);
+                }
+                else {
+                    console.log("set results with transformed data. input: ");
+                    console.log(jsonData.data);
+                    setSearchResults(jsonData.data);
+                }
             })
             .catch((error) => {
                 console.error(`ERROR! Person search failed: ${error.message}`);
@@ -45,13 +58,27 @@ export default function SearchPersonPage() {
     }
 
     useEffect(() => {
+        if (pageType === "modal") return;
+
         fetch(`${ENDPOINT}/api/people/`)
             .then(response => {
                 return response.json();
             })
             .then(jsonData => {
-                console.log(jsonData);
-                setSearchResults(jsonData.data);
+                console.log("Successfully retrieved search results:");
+                console.log(jsonData.data);
+                if (pageType === "modal") {
+                    setSearchResults(jsonData.data.map((item) => ({
+                        id: item.id,
+                        name: `${item.name.first} ${item.name.last}`
+                    })));
+                    console.log(searchResults);
+                }
+                else {
+                    console.log("set results with transformed data. input: ");
+                    console.log(jsonData.data);
+                    setSearchResults(jsonData.data);
+                }
             });
     }, []);
 
@@ -59,5 +86,7 @@ export default function SearchPersonPage() {
                                      searchFilters={searchFilters}
                                      onChange={handleChange}
                                      onSubmit={handleSubmit}
+                                     pageType={pageType}
+                                     onSelect={onSelect}
             />
 }
