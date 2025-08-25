@@ -1,3 +1,5 @@
+const db = require("./db");
+
 const mockPeople = [{
     id: 1,
     name: {
@@ -234,6 +236,22 @@ function createNewPerson(newPersonData) {
     };
 
     mockPeople.push(newPerson);
+
+    const query = "SELECT create_person($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) AS id";
+    const values = [newPersonData.firstName,
+                    newPersonData.middleName,
+                    newPersonData.lastName,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+    ];
+
+    db.query(query, values);
     
     return new Promise((resolve, reject) => {
         setTimeout(() => {

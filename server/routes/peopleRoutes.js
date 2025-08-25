@@ -1,7 +1,7 @@
 const express = require("express");
 const peopleRouter = express.Router();
 const peopleController = require("../controllers/peopleController.js");
-const peopleModel = require("../models/mockPeopleModel.js");
+const peopleModel = require("../models/peopleModel.js");
 
 function inject(handler, dependency) {
     return handler(dependency);

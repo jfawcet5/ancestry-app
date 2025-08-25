@@ -1,3 +1,6 @@
+const { successResponse, errorResponse } = require("../utils/response.js");
+
+
 // function that takes a data model (DI) and returns an express middleware
 // function that uses the data model to retrieve the correct data. 
 const getPersonById = (dataModel) => (req, res, next) => {
@@ -6,8 +9,12 @@ const getPersonById = (dataModel) => (req, res, next) => {
     dataModel.getPersonById(req.params.id)
         .then(person => {
             if (person === undefined || person === null) {
+                console.log("controller get person by id. Received good response");
+                console.log(person)
                 throw new error("person not found");
             }
+            console.log("controller get person by id. Received good response");
+            console.log(person);
             let response = {
                 success: true,
                 data: person,
@@ -16,6 +23,8 @@ const getPersonById = (dataModel) => (req, res, next) => {
             res.json(response);
         })
         .catch(error => {
+            console.log("controller. Something went wrong");
+            console.log(error);
             let response = {
                 success: false,
                 data: null,
@@ -65,11 +74,12 @@ const getPeopleList = (dataModel) => (req, res, next) => {
 
     dataModel.getPeopleList(page, limit, filters)
         .then(result => {
+            console.log("controller get people list. Received result from model");
             console.log(result);
             res.json({
                 success: true,
-                data: result.data,
-                meta: result.meta,
+                data: result,
+                meta: {},
                 message: "Success"
             });
         })

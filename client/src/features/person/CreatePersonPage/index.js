@@ -5,7 +5,7 @@ import CreatePersonPresentation from './presentation';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
-export default function CreatePersonPage() {
+export default function CreatePersonPage({pageType="page", onSelect}) {
 
     const [formData, setFormData] = useState({});
 

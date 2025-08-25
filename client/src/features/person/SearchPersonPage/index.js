@@ -46,6 +46,7 @@ export default function SearchPersonPage({pageType = "page", onSelect}) {
                 }
                 else {
                     console.log("set results with transformed data. input: ");
+                    console.log(jsonData);
                     console.log(jsonData.data);
                     setSearchResults(jsonData.data);
                 }
@@ -62,11 +63,12 @@ export default function SearchPersonPage({pageType = "page", onSelect}) {
 
         fetch(`${ENDPOINT}/api/people/`)
             .then(response => {
+                console.log(response);
                 return response.json();
             })
             .then(jsonData => {
                 console.log("Successfully retrieved search results:");
-                console.log(jsonData.data);
+                console.log(jsonData);
                 if (pageType === "modal") {
                     setSearchResults(jsonData.data.map((item) => ({
                         id: item.id,
