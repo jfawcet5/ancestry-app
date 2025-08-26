@@ -19,6 +19,7 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
                                 isEditable={editMode}
                                 inputType="text"
                                 inputName="firstName"
+                                onChange={(e) => onSelect(e.target.name, e.target.value)}
                     />
                 </SimpleDisplayField>
                 <SimpleDisplayField label="Middle Name" >
@@ -26,6 +27,7 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
                                 isEditable={editMode}
                                 inputType="text"
                                 inputName="middleName"
+                                onChange={(e) => onSelect(e.target.name, e.target.value)}
                     />
                 </SimpleDisplayField>
                 <SimpleDisplayField label="Last Name" >
@@ -33,6 +35,7 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
                                 isEditable={editMode}
                                 inputType="text"
                                 inputName="lastName"
+                                onChange={(e) => onSelect(e.target.name, e.target.value)}
                     />
                 </SimpleDisplayField>
             </>

@@ -11,7 +11,8 @@ import styles from "./styles.module.css";
 export default function InputPopup({label = "Edit",
                                     value,
                                     inputType,
-                                    onSelect
+                                    onSelect,
+                                    className
 }) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -60,9 +61,11 @@ export default function InputPopup({label = "Edit",
         setIsOpen(false);
     };
 
+    const displayValue = value ?? "+";
+
     return (
-        <div className={styles.container} onClick={() => setIsOpen(true)}>
-            <div className={styles.valueField}>{value}</div>
+        <div className={`${styles.container} ${className}`} onClick={() => setIsOpen(true)}>
+            <div className={styles.valueField}>{displayValue}</div>
 
             <PopupModal label={label} isOpen={isOpen} onClose={onClose}>
                 {content}

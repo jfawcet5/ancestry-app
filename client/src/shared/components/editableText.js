@@ -6,7 +6,8 @@ export default function EditableText({text,
                                       inputName="",
                                       linkTo=null,
                                       className="",
-                                      placeholder=""
+                                      placeholder="",
+                                      onChange
 }) {
     if (isEditable) {
         if (inputType === "textarea") {
@@ -15,6 +16,7 @@ export default function EditableText({text,
                           defaultValue={text}
                           className={className}
                           placeholder={placeholder}
+                          onChange={onChange}
                 />
             )
         }
@@ -24,6 +26,7 @@ export default function EditableText({text,
                    name={inputName}
                    defaultValue={text}
                    className={className} 
+                   onChange={onChange}
             />
         )
     }

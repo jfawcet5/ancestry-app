@@ -2,11 +2,6 @@
     padding: 0;
 }
 
-.relationContainer > h2 {
-    text-align: center;
-    margin: 1rem 0 0.25rem 0;
-}
-
 .relationListContainer {
     border: solid 1px black;
     height: 5rem;
@@ -34,11 +29,13 @@
     padding: 0.25rem;
     margin: 0;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
 }
 
 .relationList li {
     padding: 0 0.5rem 0 0.5rem;
-    margin-bottom: 0.5rem;
     background-color: lightgrey;
 }
 
@@ -60,4 +57,38 @@
 
 .relation p {
     text-align: center;
+}
+
+
+.headerBar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: 'left mid right';
+}
+
+.title {
+    grid-area: mid;
+    text-align: center;
+    margin: 1rem 0 0.25rem 0;
+}
+
+.addButton {
+    grid-area: right;
+    align-self: end;
+    justify-self: start;
+    margin: 1rem 0 0.25rem 0;
+    background-color: lightgreen;
+}
+
+
+.listItem {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 'left right';
+    column-gap: 0.5rem;
+}
+
+.removeButton {
+    background-color: lightcoral;
+    border: 1px solid grey;
 }

@@ -96,8 +96,16 @@ const getPeopleList = (dataModel) => (req, res, next) => {
     );
 }
 
+const updatePersonById = (dataModel) => (req, res, next) => {
+    console.log("Update person by ID: ", req.params.id);
+    res.status(204).send('success');
+}
+    
+
+
 module.exports = {
     getPersonById,
     createNewPerson,
-    getPeopleList
+    getPeopleList,
+    updatePersonById
 }

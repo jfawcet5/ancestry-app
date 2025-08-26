@@ -8,11 +8,12 @@ export default function ViewPersonPresentation({personData,
                                                 setIsEditMode, 
                                                 handleSave,
                                                 onSelect,
+                                                onRelationChange,
                                                 onCancel}) {
     return (
         <>
             <PersonHeader personData={personData} editMode={isEditMode} onSelect={onSelect}/>
-            <RelationSection relations={personData} isEditable={isEditMode}/>
+            <RelationSection relations={personData} isEditable={isEditMode} onChange={onRelationChange}/>
             <p>{JSON.stringify(personData)}</p>
 
             <div className='edit-mode-button'>

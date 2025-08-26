@@ -6,6 +6,7 @@ import SearchSelector from '../../../shared/components/SearchSelector.js';
 import ViewPersonPresentation from './presentation.js';
 
 import { transformPersonData } from '../../../shared/utilities/transform.js';
+import { computePersonDiff } from '../../../shared/utilities/computeDiff.js';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
@@ -42,6 +43,7 @@ function ViewPersonPage() {
                 setPersonData(transformPersonData(jsonData.data));
                 setFormData(transformPersonData(jsonData.data));
                 console.log("successfully loaded data from API");
+                console.log(transformPersonData(jsonData.data));
             })
             .catch((error) => {
                 console.error(`Failed to load person: ${id}`, error);
@@ -59,6 +61,30 @@ function ViewPersonPage() {
 
     const handleSave = () => {
         console.log("save form data");
+        const changes = computePersonDiff(personData, formData);
+        console.log(computePersonDiff(personData, formData));
+
+        if (Object.keys(changes).length !== 0) {
+            console.log("Send changes to server");
+            const config = {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(changes)
+            };
+
+            fetch(`${ENDPOINT}/api/people/${id}`, config)
+                .then(response => {
+                    console.log("Save changes");
+                    setPersonData(formData);
+                })
+                .catch(error => {
+                    console.error(error);
+            });
+        }
+
+        console.log("End handle Save");
+        console.log(personData)
+        console.log(formData)
 
         setIsEditMode(false);
     }
@@ -69,16 +95,40 @@ function ViewPersonPage() {
         setIsEditMode(false);
     }
 
-    const handleSelect = (field, value) => {
+    const handleFieldChange = (field, value) => {
         console.log("Handle Select new Value");
         console.log(`Field: ${field}, value:`);
         console.log(value);
         console.log("Old value: ");
-        console.log(formData.father);
+        console.log(formData[field]);
         setFormData(prev => ({
             ...prev,
             [field]: value
         }));
+    }
+
+    const handleRelationChange = (field, operation, value) => {
+        console.log("Handle Select new Value");
+        console.log(`Field: ${field}, value:`);
+        console.log(value);
+        console.log("Old value: ");
+        console.log(formData[field]);
+        setFormData(prev => {
+
+            let newValue;
+
+            if (operation === "add") {
+                newValue = [...prev[field], value];
+            }
+            else {
+                newValue = prev[field].filter(item => item.id !== value.id);
+            }
+            
+            return {
+                ...prev,
+                [field]: newValue
+            }
+        });
     }
 
     if (loading || !personData) {
@@ -97,7 +147,8 @@ function ViewPersonPage() {
                                     isEditMode={isEditMode}
                                     setIsEditMode={setIsEditMode}
                                     handleSave={handleSave}
-                                    onSelect={handleSelect}
+                                    onSelect={handleFieldChange}
+                                    onRelationChange={handleRelationChange}
                                     onCancel={handleCancel}
             />
         </>

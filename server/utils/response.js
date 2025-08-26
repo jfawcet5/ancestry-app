@@ -1,6 +1,6 @@
 function successResponse(res, data={}, message="Success", meta={}) {
     return res.json({
-        status: "success",
+        success: true,
         message,
         data,
         error: null,
@@ -10,7 +10,7 @@ function successResponse(res, data={}, message="Success", meta={}) {
 
 function errorResponse(res, statusCode=500, errorMessage="An error occurred", errorDetails={}) {
     res.status(statusCode).json({
-        status: "error",
+        success: false,
         message: errorMessage,
         data: null,
         error: errorDetails,
