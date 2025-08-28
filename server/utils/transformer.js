@@ -24,7 +24,8 @@ function formatResponse(data) {
             spouses: data.relations?.spouses ?? [],
             siblings: data.relations?.siblings ?? [],
             children: data.relations?.children ?? []
-        }
+        },
+        ...data
     }
 }
 

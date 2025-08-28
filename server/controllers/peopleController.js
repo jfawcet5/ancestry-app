@@ -97,8 +97,12 @@ const getPeopleList = (dataModel) => (req, res, next) => {
 }
 
 const updatePersonById = (dataModel) => (req, res, next) => {
-    console.log("Update person by ID: ", req.params.id);
-    res.status(204).send('success');
+    console.log("Controller update person by ID: ", req.params.id);
+    console.log(req.body);
+    dataModel.updatePersonById(req.params.id, req.body)
+        .then(response => {
+            res.json(response);
+        })
 }
     
 

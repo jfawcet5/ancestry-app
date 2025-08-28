@@ -36,6 +36,17 @@ export default function CreatePersonPresentation({onChange, onSubmit}) {
                     </div>
                 </div>
 
+                <div className={styles.fieldContainer}>
+                    <div className={styles.inputField}>
+                        <label>Gender</label>
+                        <select name="gender" onChange={onChange}>
+                            <option value="">--Select--</option>
+                            <option value="male">male</option>
+                            <option value="female">female</option>
+                        </select>
+                    </div>
+                </div>
+
                 <button>Create</button>
             </form>
         </>

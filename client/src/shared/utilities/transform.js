@@ -6,15 +6,16 @@ export function transformPersonData(apiData) {
         firstName: apiData.name.first,
         middleName: apiData.name.middle,
         lastName: apiData.name.last,
-        mother: apiData.relations.mother,
-        father: apiData.relations.father,
+        mother: apiData.relations?.mother ?? {},
+        father: apiData.relations?.father ?? {},
         birthDate: apiData.birth.date,
         birthLocation: apiData.birth.location,
         deathDate: apiData.death.date,
         deathLocation: apiData.death.location,
         siblings: apiData.relations.siblings,
         children: apiData.relations.children,
-        spouses: apiData.relations.spouses
+        spouses: apiData.relations.spouses,
+        gender: apiData.gender
     };
 }
 

@@ -59,7 +59,7 @@ function createNewPerson(newPersonData) {
 
     mockPeople.push(newPerson);
 
-    const query = "SELECT create_person($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) AS id";
+    const query = "SELECT create_person($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) AS id";
     const values = [newPersonData.firstName,
                     newPersonData.middleName,
                     newPersonData.lastName,
@@ -70,7 +70,8 @@ function createNewPerson(newPersonData) {
                     null,
                     null,
                     null,
-                    null
+                    null,
+                    newPersonData.gender
     ];
 
     db.query(query, values);
@@ -108,8 +109,31 @@ function getPeopleList(page, limit, filters) {
     });
 }
 
+
+function updatePersonById(id, patchJSON) {
+    console.log("Model update person by ID");
+    
+    return new Promise((resolve, reject) => {
+        db.query("SELECT update_person_details_partial($1, $2)", [id, patchJSON])
+        .then(responseJSON => {
+            if (responseJSON != null) {
+                console.log("non null response. Return promise");
+                console.log("Raw response: ");
+                console.log(responseJSON);
+    
+                resolve('success');
+            }
+        })
+        .catch((error => {
+            console.log(error);
+            reject(error);
+        }));
+    });
+}
+
 module.exports = {
     getPersonById,
     createNewPerson,
-    getPeopleList
+    getPeopleList,
+    updatePersonById
 }

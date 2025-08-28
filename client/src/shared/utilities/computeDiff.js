@@ -38,19 +38,18 @@ export function computePersonDiff(original, edited) {
         const editList = edited[relation] || [];
         const originalList = original[relation] || [];
 
-        const additions = editList.filter(eItem => !originalList.find(oItem => oItem.id === eItem.id));
-        const removals = originalList.filter(oItem => !editList.find(eItem => eItem.id === oItem.id));
+        const additions = editList.filter(eItem => !originalList.find(oItem => oItem.id === eItem.id)) 
+                                  .map(item => ({relationType: relation, ...item}));
 
+        const removals = originalList.filter(oItem => !editList.find(eItem => eItem.id === oItem.id)) 
+                                  .map(item => ({relationType: relation, ...item}));
+        
         if (additions.length) {
-            patch.additions = [...(patch.additions ?? []), {
-                [relation]: additions
-            }];
+            patch.additions = [...(patch.additions ?? []), ...additions];
         }
 
         if (removals.length) {
-            patch.removals = [...(patch.removals ?? []), {
-                [relation]: removals
-            }];
+            patch.removals = [...(patch.removals ?? []), ...removals];
         }
     }
 
