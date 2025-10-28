@@ -1,32 +1,37 @@
 const db = require("./db");
-const { formatResponse } = require("../utils/transformer.js");
+const { formatResponse, parseInputJson } = require("../utils/transformer.js");
+const { logger } = require("../utils/logger.js");
 
 const mockPeople = [];
 
 let nextId = 6;
 
 function getPersonById(id) {
-    console.log("data model get person by id");
+    logger.debug("Enter peopleModel.GetPersonById", id);
 
     return new Promise((resolve, reject) => {
         db.query("SELECT get_person_details_full($1) AS data", [id])
         .then(responseJSON => {
             if (responseJSON != null) {
-                console.log("non null response. Return promise");
-                console.log("Raw response: ");
-                console.log(responseJSON);
+                logger.debug("Received response from DB");
 
                 data = responseJSON.rows[0].data;
-                console.log("DB result set:");
-                console.log(data);
+                /*
+                const fileName = logger.saveToFile("getPersonById_raw", data, "json");
+                if (fileName) {
+                    logger.debug(`DB response saved to file: ${fileName}`);
+                }
+                */
     
                 const result = formatResponse(data);
-    
+                
+                logger.debug("Exit peopleModel.GetPersonById", id);
                 resolve(result);
             }
         })
         .catch((error => {
-            console.log(error);
+            logger.error("DB returned an error", error.message);
+            logger.debug("Exit peopleModel.GetPersonById", id);
             reject(error);
         }));
     });
@@ -112,9 +117,12 @@ function getPeopleList(page, limit, filters) {
 
 function updatePersonById(id, patchJSON) {
     console.log("Model update person by ID");
+    console.log("Transform input");
+    const inputData = parseInputJson(patchJSON);
+    console.log(inputData);
     
     return new Promise((resolve, reject) => {
-        db.query("SELECT update_person_details_partial($1, $2)", [id, patchJSON])
+        db.query("SELECT update_person_details_partial($1, $2)", [id, inputData])
         .then(responseJSON => {
             if (responseJSON != null) {
                 console.log("non null response. Return promise");

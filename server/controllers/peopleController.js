@@ -1,30 +1,41 @@
 const { successResponse, errorResponse } = require("../utils/response.js");
-
+const { logger } = require("../utils/logger.js");
 
 // function that takes a data model (DI) and returns an express middleware
 // function that uses the data model to retrieve the correct data. 
 const getPersonById = (dataModel) => (req, res, next) => {
-    console.log("Get Person By Id");
-    console.log(req.params);
+    logger.debug("Enter peopleController.GetPersonById", req.params);
+    //console.log(req.params);
     dataModel.getPersonById(req.params.id)
         .then(person => {
             if (person === undefined || person === null) {
-                console.log("controller get person by id. Received good response");
-                console.log(person)
+                //console.log("controller get person by id. Received good response");
+                //console.log(person)
+                logger.error("Controller did not receive a valid response");
+                logger.debug("Exit peopleController.GetPersonById");
                 throw new error("person not found");
             }
-            console.log("controller get person by id. Received good response");
-            console.log(person);
+            //console.log("controller get person by id. Received good response");
+            //console.log(person);
+            logger.debug("Controller successfully received person from DB");
             let response = {
                 success: true,
                 data: person,
                 message: "Person found"
             }
+
+            logger.debug("Saving server response to file");
+            const fileName = logger.saveToFile("getPersonById_output", response, "json");
+            if (fileName) {
+                logger.info(`Server response saved to file: ${fileName}`);
+            }
+            logger.debug("Exit peopleController.GetPersonById");
             res.json(response);
         })
         .catch(error => {
-            console.log("controller. Something went wrong");
-            console.log(error);
+            //console.log("controller. Something went wrong");
+            //console.log(error);
+            logger.error(`Controller unable to fetch person ${req.params.id}`, error.message);
             let response = {
                 success: false,
                 data: null,
@@ -33,6 +44,12 @@ const getPersonById = (dataModel) => (req, res, next) => {
                     message: "Person not found"
                 }
             }
+            logger.debug("Saving server response to file");
+            const fileName = logger.saveToFile("getPersonById_output", response, "json");
+            if (fileName) {
+                logger.info(`Server response saved to file: ${fileName}`);
+            }
+            logger.debug("Exit peopleController.GetPersonById");
             res.status(404).send(response);
         })
 }

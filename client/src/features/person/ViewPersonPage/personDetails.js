@@ -53,6 +53,7 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
                                   isEditable={editMode}
                                   inputType="date"
                                   inputName="birthDate"
+                                  onChange={(e) => onSelect(e.target.name, e.target.value)}
                     />
                     <EditableText text={personData.birthLocation}
                                   isEditable={editMode}
@@ -66,6 +67,7 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
                                   isEditable={editMode}
                                   inputType="date"
                                   inputName="deathDate"
+                                  onChange={(e) => onSelect(e.target.name, e.target.value)}
                     />
                     <EditableText text={personData.deathLocation}
                                   isEditable={editMode}

@@ -24,7 +24,7 @@ export function computePersonDiff(original, edited) {
         console.log(original[relation]);
         if (edited[relation] && original[relation]) {
             if (edited[relation].id !== original[relation].id) {
-                patch[relation] = edited[relation];
+                patch[relation] = edited[relation].id;
             }
         }
     }

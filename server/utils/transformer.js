@@ -29,4 +29,34 @@ function formatResponse(data) {
     }
 }
 
-module.exports = { flattenResponse, formatResponse };
+function extractDate(dateString) {
+    if (dateString == null) {
+        return null;
+    }
+
+    // Expecting format: "yyyy-mm-dd"
+    const values = dateString.split("-");
+    return {
+        year: values[0],
+        ...(values[1] && {month: values[1]}),
+        ...(values[2] && {day: values[2]})
+    };
+}
+
+function parseInputJson(data) {
+    const birthDate = extractDate(data.birthDate);
+    const deathDate = extractDate(data.deathDate);
+    return {
+        ...(data.firstName && {firstName: data.firstName}),
+        ...(data.middleName && {middleName: data.middleName}),
+        ...(data.lastName && {lastName: data.lastName}),
+        ...(birthDate && {birth: {...birthDate}}),
+        ...(deathDate && {death: {...deathDate}}),
+        ...(data.mother && {mother: data.mother}),
+        ...(data.father && {father: data.father}),
+        ...(data.removals && {removals: [...data.removals]}),
+        ...(data.additions && {additions: [...data.additions]})
+    }
+}
+
+module.exports = { flattenResponse, formatResponse, parseInputJson };
