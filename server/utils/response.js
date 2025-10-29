@@ -1,21 +1,15 @@
-function successResponse(res, data={}, message="Success", meta={}) {
-    return res.json({
-        success: true,
-        message,
-        data,
-        error: null,
-        meta
-    });
+function formatResponse(success, message, data, error=null, meta={}) {
+    return {
+        success: success,
+        message: message,
+        data: data,
+        error: error,
+        meta: meta
+    };
 }
 
-function errorResponse(res, statusCode=500, errorMessage="An error occurred", errorDetails={}) {
-    res.status(statusCode).json({
-        success: false,
-        message: errorMessage,
-        data: null,
-        error: errorDetails,
-        meta: {}
-    })
+function sendResponse(res, status, bodyJSON) {
+    res.status(status).send(bodyJSON);
 }
 
-module.exports = { successResponse, errorResponse };
+module.exports = { sendResponse, formatResponse };

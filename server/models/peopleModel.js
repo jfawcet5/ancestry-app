@@ -1,5 +1,5 @@
 const db = require("./db");
-const { formatResponse, parseInputJson } = require("../utils/transformer.js");
+const { generateOutputPayload, parseInputJson } = require("../utils/transformer.js");
 const { logger } = require("../utils/logger.js");
 
 const mockPeople = [];
@@ -16,14 +16,8 @@ function getPersonById(id) {
                 logger.debug("Received response from DB");
 
                 data = responseJSON.rows[0].data;
-                /*
-                const fileName = logger.saveToFile("getPersonById_raw", data, "json");
-                if (fileName) {
-                    logger.debug(`DB response saved to file: ${fileName}`);
-                }
-                */
     
-                const result = formatResponse(data);
+                const result = generateOutputPayload(data);
                 
                 logger.debug("Exit peopleModel.GetPersonById", id);
                 resolve(result);
@@ -38,6 +32,7 @@ function getPersonById(id) {
 }
 
 function createNewPerson(newPersonData) {
+    logger.debug("Enter peopleModel.CreateNewPerson", id);
     const newPerson = {
         id: nextId++,
         name: {
@@ -90,25 +85,27 @@ function createNewPerson(newPersonData) {
 
 
 function getPeopleList(page, limit, filters) {
-    console.log("Datamodel: Get people list");
+    logger.debug("Enter peopleModel.GetPeopleList");
 
     return new Promise((resolve, reject) => {
         db.query("SELECT * FROM a_person")
         .then(response => {
             if (response != null) {
-                console.log("non null response. Return promise");
+                logger.debug("Model received valid response from DB");
+                //console.log("non null response. Return promise");
 
                 const results = [];
 
                 for (let i = 0; i < response.rows.length; i++) {
-                    results.push(formatResponse(response.rows[i]));
+                    results.push(generateOutputPayload(response.rows[i]));
                 }
 
                 resolve(results);
             }
         })
         .catch((error => {
-            console.log(error);
+            logger.error("Failed to query DB", error.message);
+            //console.log(error);
             reject(error);
         }));
     });
@@ -116,24 +113,27 @@ function getPeopleList(page, limit, filters) {
 
 
 function updatePersonById(id, patchJSON) {
-    console.log("Model update person by ID");
-    console.log("Transform input");
+    logger.debug("Enter peopleModel.UpdatePersonById");
+    //console.log("Model update person by ID");
+    //console.log("Transform input");
     const inputData = parseInputJson(patchJSON);
-    console.log(inputData);
+    //console.log(inputData);
     
     return new Promise((resolve, reject) => {
         db.query("SELECT update_person_details_partial($1, $2)", [id, inputData])
         .then(responseJSON => {
             if (responseJSON != null) {
-                console.log("non null response. Return promise");
-                console.log("Raw response: ");
-                console.log(responseJSON);
+                logger.debug("Model received valid response from DB");
+                //console.log("non null response. Return promise");
+                //console.log("Raw response: ");
+                //console.log(responseJSON);
     
-                resolve('success');
+                resolve(null);
             }
         })
         .catch((error => {
-            console.log(error);
+            logger.error("Failed to update person", error.message);
+            //console.log(error);
             reject(error);
         }));
     });

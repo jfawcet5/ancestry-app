@@ -2,7 +2,7 @@ function flattenResponse(data) {
     return;
 }
 
-function formatResponse(data) {
+function generateOutputPayload(data) {
     return {
         id: data.id,
         name: {
@@ -59,4 +59,4 @@ function parseInputJson(data) {
     }
 }
 
-module.exports = { flattenResponse, formatResponse, parseInputJson };
+module.exports = { flattenResponse, generateOutputPayload, parseInputJson };

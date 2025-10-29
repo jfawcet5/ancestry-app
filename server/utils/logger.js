@@ -23,7 +23,7 @@ class Logger{
 
     _format(level, message, meta) {
         const time = new Date().toISOString();
-        const metaString = meta ? JSON.stringify(meta) : '';
+        const metaString = meta ? meta : '';
         return `${time} | ${this.name} | ${level} | ${message} | ${metaString}`;
     }
 
