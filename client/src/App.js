@@ -12,6 +12,7 @@ import SearchPage from './pages/searchPage.js';
 import ViewPersonPage from './features/person/ViewPersonPage/index.js';
 import CreatePersonPage from './features/person/CreatePersonPage/index.js';
 import SearchPersonPage from './features/person/SearchPersonPage/index.js';
+import ViewTreePage from './features/tree/ViewTreePage/index.js';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/search" element={<SearchPersonPage />}/>
           <Route path="/people/:id" element={<ViewPersonPage />}/>
           <Route path="/create" element={<CreatePersonPage />}/>
+          <Route path="/treeview" element={<ViewTreePage />}/>
         </Routes>
       </PageLayout>
     </Router>

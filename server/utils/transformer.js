@@ -31,7 +31,7 @@ function generateOutputPayload(data) {
 
 function extractDate(dateString) {
     if (dateString == null) {
-        return null;
+        return {};
     }
 
     // Expecting format: "yyyy-mm-dd"
@@ -47,11 +47,15 @@ function parseInputJson(data) {
     const birthDate = extractDate(data.birthDate);
     const deathDate = extractDate(data.deathDate);
     return {
-        ...(data.firstName && {firstName: data.firstName}),
-        ...(data.middleName && {middleName: data.middleName}),
-        ...(data.lastName && {lastName: data.lastName}),
-        ...(birthDate && {birth: {...birthDate}}),
-        ...(deathDate && {death: {...deathDate}}),
+        ...(data.firstName && {first_name: data.firstName}),
+        ...(data.middleName && {middle_name: data.middleName}),
+        ...(data.lastName && {last_name: data.lastName}),
+        ...(birthDate.year && {birth_year: birthDate.year}),
+        ...(birthDate.month && {birth_month: birthDate.month}),
+        ...(birthDate.day && {birth_day: birthDate.day}),
+        ...(deathDate.year && {death_year: deathDate.year}),
+        ...(deathDate.month && {death_month: deathDate.month}),
+        ...(deathDate.day && {death_day: deathDate.day}),
         ...(data.mother && {mother: data.mother}),
         ...(data.father && {father: data.father}),
         ...(data.removals && {removals: [...data.removals]}),

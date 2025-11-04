@@ -1,13 +1,30 @@
 const { formatResponse, sendResponse } = require("../utils/response.js");
+const { parseInputJson } = require("../utils/transformer.js");
+
 const { logger } = require("../utils/logger.js");
-
-
 
 function saveJsonPayload(bodyJSON, logFileName, logMessage="Saved file:") {
     const fileName = logger.saveToFile(logFileName, bodyJSON, "json");
     if (fileName) {
         logger.info(`${logMessage} ${fileName}`);
     }
+}
+
+function generateSearchFilters(queryString) {
+    flattened = parseInputJson(queryString);
+
+    let filters = [];
+
+    for (let key in flattened) {
+        let filter = {
+            target: key,
+            value: flattened[key]
+        }
+
+        filters.push(filter);
+    }
+
+    return filters;
 }
 
 // function that takes a data model (DI) and returns an express middleware
@@ -81,10 +98,11 @@ const createNewPerson = (dataModel) => (req, res, next) => {
 const getPeopleList = (dataModel) => (req, res, next) => {
     logger.debug("Enter peopleController.GetPeopleList");
     logger.debug("Query filters", JSON.stringify(req.query));
-    const filters = {
-        firstName: req.query.firstName || null,
-        lastName: req.query.lastName || null,
-    };
+
+    const filters = generateSearchFilters(req.query);
+
+    saveJsonPayload(filters, "getPeopleList_input");
+
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
@@ -118,12 +136,7 @@ const getPeopleList = (dataModel) => (req, res, next) => {
 const updatePersonById = (dataModel) => (req, res, next) => {
     logger.debug("Enter peopleController.UpdatePersonById", JSON.stringify(req.params));
     
-    saveJsonPayload(req.body, "updatePersonById_input")
-
-    const fileName = logger.saveToFile("updatePersonById_input", req.body, "json");
-    if (fileName) {
-        logger.info(`Request input saved to file: ${fileName}`);
-    }
+    saveJsonPayload(req.body, "updatePersonById_input");
 
     dataModel.updatePersonById(req.params.id, req.body)
         .then(result => {
@@ -137,12 +150,52 @@ const updatePersonById = (dataModel) => (req, res, next) => {
             logger.debug("Exit peopleController.UpdatePersonById");
         })
 }
-    
+
+
+
+const data = [{
+    id: 1,
+    name: "jaf",
+    children: [5, 6, 7],
+}, {
+    id: 2,
+    name: "deh",
+    children: [4, 5, 6, 7],
+}, {
+    id: 3,
+    name: "das",
+    children: [4],
+}, {
+    id: 4,
+    name: "cos",
+    children: [8, 9],
+}, {
+    id: 5,
+    name: "auf",
+    children: [10],
+}, {
+    id: 6, 
+    name: "jof",
+    children: [],
+}, {
+    id: 7,
+    name: "abf",
+    children: [],
+}]
+
+const getTreeFocusData = (dataModel) => (req, res, next) => {
+    logger.debug("Enter peopleController.GetTreeFocusData", JSON.stringify(req.params));
+
+    const response = formatResponse(true, "Success", data);
+
+    sendResponse(res, 200, response);
+}
 
 
 module.exports = {
     getPersonById,
     createNewPerson,
     getPeopleList,
-    updatePersonById
+    updatePersonById,
+    getTreeFocusData
 }

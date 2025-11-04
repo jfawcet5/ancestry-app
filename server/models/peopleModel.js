@@ -97,7 +97,23 @@ function getPeopleList(page, limit, filters) {
                 const results = [];
 
                 for (let i = 0; i < response.rows.length; i++) {
-                    results.push(generateOutputPayload(response.rows[i]));
+                    // iterate through filters
+                    // check if rows[filter.target] == filter.value
+                    let object = response.rows[i];
+
+                    let matches = 0;
+
+                    for (const filter of filters) {
+                        let target = filter.target;
+                        if (object[target] && object[target].toLowerCase() == filter.value.toLowerCase()) {
+                            //results.push(generateOutputPayload(response.rows[i]));
+                            matches++;
+                        }
+                    }
+
+                    if (matches >= filters.length) {
+                        results.push(generateOutputPayload(response.rows[i]));
+                    }
                 }
 
                 resolve(results);
@@ -137,6 +153,10 @@ function updatePersonById(id, patchJSON) {
             reject(error);
         }));
     });
+}
+
+function getTreeFocusData() {
+    ;
 }
 
 module.exports = {

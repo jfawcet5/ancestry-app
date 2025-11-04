@@ -3,6 +3,7 @@ const apiRouter = express.Router();
 
 const peopleRouter = require("./peopleRoutes.js");
 const relationRouter = require("./relationRoutes.js");
+const treeRouter = require("./treeRoutes.js");
 
 
 apiRouter.get("/hello", (req, res) => {
@@ -19,5 +20,6 @@ apiRouter.get("/marriages/", (req, res) => {
 
 apiRouter.use("/people/", peopleRouter);
 apiRouter.use("/relations/", relationRouter);
+apiRouter.use("/tree", treeRouter);
 
 module.exports = apiRouter;
