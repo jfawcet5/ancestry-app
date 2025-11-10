@@ -183,12 +183,89 @@ const data = [{
     children: [],
 }]
 
+const data2 = {
+    gen1: [
+        {
+            id: 0,
+            name: "jaf",
+            hasParents: true
+        },
+        {
+            id: 1,
+            name: "def",
+            hasParents: true
+        },
+        {
+            id: 2,
+            name: "das",
+            hasParents: false
+        }
+    ],
+    gen2: [
+        {
+            id: 4,
+            name: "cos",
+            parents: [1, 2],
+            hasChildren: true
+        },
+        {
+            id: 5,
+            name: "auf",
+            parents: [0, 1],
+            hasChildren: true
+        },
+        {
+            id: 14,
+            name: "jof",
+            parents: [0, 1],
+            hasChildren: false
+        },
+        {
+            id: 7,
+            name: "abf",
+            parents: [0, 1],
+            hasChildren: false
+        }
+    ]
+}
+
 const getTreeFocusData = (dataModel) => (req, res, next) => {
     logger.debug("Enter peopleController.GetTreeFocusData", JSON.stringify(req.params));
 
-    const response = formatResponse(true, "Success", data);
+    dataModel.getTreeFocusData(req.params.id)
+        .then(responseJSON => {
+            if (responseJSON === undefined || responseJSON === null) {
+                logger.error("Controller did not receive a valid response");
+                logger.debug("Exit peopleController.GetTreeFocusData");
+                throw new error("Bad DB response");
+            }
+            logger.info("Controller successfully received person from DB");
 
-    sendResponse(res, 200, response);
+            const response = formatResponse(true, "Success", responseJSON);
+
+            saveJsonPayload(response, "getTreeFocusData_output");
+            sendResponse(res, 200, response);
+            logger.debug("Exit peopleController.getTreeFocusData");
+        })
+        .catch(error => {
+            logger.error(`Controller unable to fetch tree ${req.params.id}`, error.message);
+            
+            const errorResponse = {
+                code: "NOT_FOUND",
+                message: "Failed to retrieve tree data"
+            };
+
+            const response = formatResponse(false, "Operation Failed", null, errorResponse);
+
+            saveJsonPayload(response, "getTreeFocusData_output");
+            sendResponse(res, 500, response);
+
+            logger.debug("Exit peopleController.GetTreeFocusData");
+        })
+
+    //const response = formatResponse(true, "Success", data2);
+
+    //sendResponse(res, 200, response);
 }
 
 

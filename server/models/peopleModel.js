@@ -15,6 +15,7 @@ function getPersonById(id) {
             if (responseJSON != null) {
                 logger.debug("Received response from DB");
 
+                console.log(responseJSON);
                 data = responseJSON.rows[0].data;
     
                 const result = generateOutputPayload(data);
@@ -32,7 +33,7 @@ function getPersonById(id) {
 }
 
 function createNewPerson(newPersonData) {
-    logger.debug("Enter peopleModel.CreateNewPerson", id);
+    logger.debug("Enter peopleModel.CreateNewPerson");
     const newPerson = {
         id: nextId++,
         name: {
@@ -155,13 +156,36 @@ function updatePersonById(id, patchJSON) {
     });
 }
 
-function getTreeFocusData() {
-    ;
+function getTreeFocusData(id) {
+    logger.debug("Enter peopleModel.GetTreeFocusData", id);
+
+    return new Promise((resolve, reject) => {
+        db.query("SELECT get_person_tree_snapshot_window($1) AS data", [id])
+        .then(responseJSON => {
+            if (responseJSON != null) {
+                logger.debug("Received response from DB");
+
+                console.log(responseJSON);
+                data = responseJSON.rows[0].data;
+                //console.log(data);
+                
+                logger.debug("Exit peopleModel.GetTreeFocusData", id);
+                resolve(data);
+            }
+        })
+        .catch((error => {
+            logger.error("Failed to update person", error.message);
+            console.log(error.stack)
+            //console.log(error);
+            reject(error);
+        }));
+    });
 }
 
 module.exports = {
     getPersonById,
     createNewPerson,
     getPeopleList,
-    updatePersonById
+    updatePersonById,
+    getTreeFocusData
 }
