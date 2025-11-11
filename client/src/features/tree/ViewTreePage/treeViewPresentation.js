@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import SearchBar from '../../person/SearchPersonPage/searchBar';
 import PopupModal from '../../../shared/components/PopupModal';
@@ -46,7 +47,7 @@ export default function TreeViewPresentation({personData,
                 }
                 <button onClick={() => {setControlPanelOpen(!controlPanelOpen)}}>---</button>
             </div>
-            <div style={{overflowX: "auto", width: "50%"}}>
+            <div style={{overflowX: "auto", width: "75%"}}>
             
             <svg width={treeViewData.width} height="400" style={{ border: "1px solid #ccc" }}>
                 {treeViewData.rects && treeViewData.rects.map((r, i) => (
@@ -108,65 +109,8 @@ function PersonNode({ person, isFocus, onClick, size }) {
           y={5}
           style={{ fontFamily: "sans-serif", fontSize: 14 }}
         >
-          {person.name}
+          <Link to={`/people/${person.id}`}>{person.name}</Link>
         </text>
       </g>
     );
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-function TreeViewPresentation2({personData,
-    controlPanelOpen, 
-    setControlPanelOpen,
-    searchResults=[],
-    setSearchResults,
-    searchModalOpen,
-    setSearchModalOpen,
-    treeViewData,
-    treeFocusId,
-    handleSave,
-    onSelect,
-    onRelationChange,
-    onCancel}) {
-return (
-<>
-<div>
-{controlPanelOpen && <SearchBar onSetSearchResults={setSearchResults}>
-<PopupModal label="Search Results" isOpen={searchModalOpen} onClose={() => setSearchModalOpen(false) }>
-<ul>
-{searchResults.map((item) => <li key={item.id}>
-                <button key={item.id} onClick={() => onSelect(item.id)}>{item.name}</button>
-            </li>)
-}
-</ul>
-</PopupModal>
-</SearchBar>
-}
-<button onClick={() => {setControlPanelOpen(!controlPanelOpen)}}>---</button>
-</div>
-<div style={{overflowX: "auto", width: "50%"}}>
-
-<svg width={500} height="400" style={{ border: "1px solid #ccc" }}>
-{treeViewData.gen1 && treeViewData.gen1.map(c => (
-<PersonNode key={c.id} person={c} />
-))}
-{/* Children */}
-{treeViewData.gen2 && treeViewData.gen2.map(c => (
-<PersonNode key={c.id} person={c} isFocus={c.id === treeFocusId}/>
-))}
-</svg>
-</div>
-</>
-);
 }

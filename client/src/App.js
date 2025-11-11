@@ -27,6 +27,7 @@ function App() {
           <Route path="/people/:id" element={<ViewPersonPage />}/>
           <Route path="/create" element={<CreatePersonPage />}/>
           <Route path="/treeview" element={<ViewTreePage />}/>
+          <Route path="/treeview/:id" element={<ViewTreePage />}/>
         </Routes>
       </PageLayout>
     </Router>
