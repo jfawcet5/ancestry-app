@@ -75,7 +75,38 @@ function createNewPerson(newPersonData) {
                     newPersonData.gender
     ];
 
-    db.query(query, values);
+    return new Promise((resolve, reject) => {
+        db.query(query, values)
+        .then(response => {
+            if (response != null) {
+                logger.debug("Model received valid response from DB");
+                //console.log("non null response. Return promise");
+
+                const results = response.rows[0];
+
+                if (results != null) {
+                    resolve({
+                        ...results,
+                        name: {
+                            first: newPersonData.firstName,
+                            middle: newPersonData.middleName,
+                            last: newPersonData.lastName
+                        }
+                    });
+                }
+                else {
+                    throw new Error("Failed to create person");
+                }
+            }
+        })
+        .catch((error => {
+            logger.error("Failed to query DB", error.message);
+            //console.log(error);
+            reject(error);
+        }));
+    });
+
+
     
     return new Promise((resolve, reject) => {
         setTimeout(() => {

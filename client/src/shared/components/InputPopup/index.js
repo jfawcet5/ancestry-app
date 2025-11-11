@@ -44,7 +44,7 @@ export default function InputPopup({label = "Edit",
                         <SearchPersonPage pageType="modal" onSelect={handleSelect}/>
                     </Tab>
                     <Tab name="Create">
-                        <CreatePersonPage />
+                        <CreatePersonPage onSelect={handleSelect}/>
                     </Tab>
                 </TabController>
             )

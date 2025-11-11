@@ -42,7 +42,14 @@ export default function CreatePersonPage({pageType="page", onSelect}) {
             return response.json();
           })
           .then(jsonData => {
-            console.log(jsonData.data.id);
+            console.log("created person");
+            console.log(jsonData.data);
+            if (onSelect != null) {
+              onSelect(e, {
+                id: jsonData.data.id,
+                name: `${jsonData.data.name.first} ${jsonData.data.name.last}`
+              });
+            }
           })
 
         console.log("Submit");

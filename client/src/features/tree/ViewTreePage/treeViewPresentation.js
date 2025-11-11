@@ -74,7 +74,17 @@ export default function TreeViewPresentation({personData,
                     />
                     ))
                 }
-                {treeViewData.nodes && treeViewData.nodes.map((item) => <PersonNode key={item.key} person={item}/>)}
+
+                {treeViewData.polygons && treeViewData.polygons.map((e, i) => (
+                    <polygon
+                        key={i}
+                        points={e.points}
+                        onClick={() => onSelect(e.id)}
+                    />
+                    ))
+                }
+
+                {treeViewData.nodes && treeViewData.nodes.map((item) => <PersonNode key={item.key} person={item} size={treeViewData.radius}/>)}
             </svg>
         </div>
         </>
@@ -83,8 +93,8 @@ export default function TreeViewPresentation({personData,
 
 
 
-function PersonNode({ person, isFocus, onClick }) {
-    const size = 50;
+function PersonNode({ person, isFocus, onClick, size }) {
+    const radius = size;
     const fill = isFocus ? "#ffdd88" : "#cce5ff";
     return (
       <g
@@ -92,7 +102,7 @@ function PersonNode({ person, isFocus, onClick }) {
         onClick={onClick}
         style={{ cursor: onClick ? "pointer" : "default" }}
       >
-        <circle r={size / 2} fill={fill} stroke="#333" strokeWidth="2" />
+        <circle r={radius} fill={fill} stroke="#333" strokeWidth="1" />
         <text
           textAnchor="middle"
           y={5}

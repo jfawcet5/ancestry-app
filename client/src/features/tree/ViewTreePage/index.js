@@ -75,7 +75,8 @@ function preProcessTreeDataStage1(data) {
     let groups = [];
     // iterate through the children to generate groups
     for (let item of data.gen2) {
-        let groupId = item.parents.join("-");
+        let temp = item.parents.sort();
+        let groupId = temp.join("-");
         let group = groups.find(item => item.id === groupId);
         if (!group) {
             let newGroup = {
@@ -83,10 +84,15 @@ function preProcessTreeDataStage1(data) {
                 children: [{
                     id: item.id,
                     key: groupId + item.id, // unique key identifier since parents can be duplicated
-                    name: item.name
+                    name: item.name,
+                    children: item.children
                 }],
                 parents: [],
-                backgroundRects: []
+                shapes: {
+                    backgroundRects: [],
+                    connectors: [],
+                    polygons: []
+                }
             };
 
             for (let parentid of item.parents) {
@@ -111,6 +117,7 @@ function preProcessTreeDataStage1(data) {
             console.log(parentData);
             if (parentData) {
                 parent.name = parentData.name;
+                parent.parents = parentData.parents;
             }
         }
     }
@@ -118,13 +125,17 @@ function preProcessTreeDataStage1(data) {
     console.log(groups);
     
     return {
-        groups: groups
+        groups: groups,
+        radius: 40
     }
 }
 
 function preProcessTreeDataStage2(data) {
+    // Calculate positions of each node
+    const gen1_y = 150;
+    const gen2_y = 300;
     let x_pos = 0;
-    let radius = 25;
+    let radius = data.radius;
     let padding = 5;
     let totalWidth = 5;
     // iterate through each of the groups
@@ -138,22 +149,41 @@ function preProcessTreeDataStage2(data) {
         totalWidth += groupTotalWidth;
 
         let centerX = Math.floor(groupTotalWidth / 2);
-        //let c_width = group.children.length * radius;
-        //let p_width = group.parents.length * radius;
-        //let centerx = x_pos + (Math.max(c_width, p_width) / 2);
 
-        let p_x = x_pos + centerX - radius - (padding / 2);
+        console.warn("Populating parent positions");
+
+        let p_x = x_pos + centerX - calculateOffset(radius, padding / 2, parentCount);
+
+        console.log(`parent start x: ${p_x}`)
 
         for (let parent of group.parents) {
             parent.x = p_x;
-            parent.y = 150;
+            parent.y = gen1_y;
+
+            if (parent.parents != null) {
+                console.log(parent.name);
+
+                let points = [
+                    [p_x, gen1_y - (radius * 2)],
+                    [p_x - radius * 0.5, gen1_y - radius * 3/2],
+                    [p_x + radius * 0.5, gen1_y - radius * 3/2]
+                ]
+
+                let arrow = {
+                    points: points.map(p => p.join(",")).join(" "),
+                    id: parent.id
+                }
+
+                group.shapes.polygons.push(arrow);
+            }
+
             p_x += padding + (radius * 2);
         }
 
         let pWidth = (parentCount * radius * 2) + ((parentCount + 1) * padding)
 
         let pRectLeft = x_pos + centerX - (pWidth / 2);
-        let pRectTop = 150 - radius - padding;
+        let pRectTop = gen1_y - radius - padding;
 
         let parentBackground = {
             x: pRectLeft,
@@ -162,25 +192,48 @@ function preProcessTreeDataStage2(data) {
             height: padding + padding + radius * 2
         }
 
-        group.backgroundRects.push(parentBackground);
+        group.shapes.backgroundRects.push(parentBackground);
 
-        const childOffset1 = (2 * padding) * (childCount + 1) % 2;
-        const childOffset2 = (Math.floor(childCount / 2) * radius * 2) +  2 * (Math.floor(childCount / 2) * padding);
-        const childStartX = centerX - childOffset1 - childOffset2;
+        console.warn("Populating children positions");
+        console.log(`total width: ${groupTotalWidth}`);
+        console.log(`center X: ${centerX}`);
+        console.log(`x position: ${x_pos}`);
+
+        const childStartX = centerX - calculateOffset(radius, padding, childCount);
+        console.log(`child start X: ${childStartX}`);
 
         let c_x = childStartX + x_pos;
+        console.log(`absolute start x: ${c_x}`);
 
         for (let child of group.children) {
             child.x = c_x;
-            child.y = 300;
-            c_x += padding + padding + (radius * 2);
+            child.y = gen2_y;
+
+            if (child.children != null) {
+                console.log(child.name);
+
+                let points = [
+                    [c_x, gen2_y + (radius * 2)],
+                    [c_x - radius * 0.5, gen2_y + radius * 3/2],
+                    [c_x + radius * 0.5, gen2_y + radius * 3/2]
+                ]
+
+                let arrow = {
+                    points: points.map(p => p.join(",")).join(" "),
+                    id: child.children[Math.floor(Math.random() * child.children.length)]
+                }
+
+                group.shapes.polygons.push(arrow);
+            }
+
+            c_x += padding + (radius * 2);
         }
 
         if (childCount > 1) {
             let cWidth = (childCount * radius * 2) + ((childCount + 1) * padding)
 
             let cRectLeft = x_pos + centerX - (cWidth / 2);
-            let cRectTop = 300 - radius - padding;
+            let cRectTop = gen2_y - radius - padding;
 
             let childBackground = {
                 x: cRectLeft,
@@ -189,22 +242,25 @@ function preProcessTreeDataStage2(data) {
                 height: padding + padding + radius * 2
             }
 
-            group.backgroundRects.push(childBackground)
+            group.shapes.backgroundRects.push(childBackground)
         }
 
         let connector = {
             x1: centerX + x_pos,
-            y1: 150 + radius + (2 * padding),
+            y1: gen1_y + radius + (2 * padding),
             x2: centerX + x_pos,
-            y2: 300 - radius - (2 * padding)
+            y2: gen2_y - radius - (2 * padding)
         }
 
-        group.connector = connector;
+        console.log('connector');
+        console.log(connector);
+
+        group.shapes.connectors.push(connector);
 
         x_pos += groupTotalWidth + padding;
     }
 
-    console.log(data);
+    //console.log(data);
     // calculate positions of each of the items
     // calculate positions of the connections
     //data.width = 800;
@@ -213,15 +269,18 @@ function preProcessTreeDataStage2(data) {
 }
 
 function preProcessTreeDataStage3(data) {
+    // Format tree data for the tree view
     let result = {
+        radius: data.radius,
         width: data.width,
         nodes: [],
         rects: [],
-        lines: []
+        lines: [],
+        polygons: []
     }
 
     for (let group of data.groups) {
-        for (let rect of group.backgroundRects) {
+        for (let rect of group.shapes.backgroundRects) {
             result.rects.push(rect);
         }
 
@@ -230,10 +289,17 @@ function preProcessTreeDataStage3(data) {
         }
 
         for (let child of group.children) {
-            result.nodes.push(child)
+            result.nodes.push(child);
         }
 
-        result.lines.push(group.connector);
+        for (let conn of group.shapes.connectors) {
+            result.lines.push(conn);
+        }
+
+        for (let poly of group.shapes.polygons) {
+            result.polygons.push(poly);
+        }
+
     }
 
     console.log(result);
@@ -242,8 +308,32 @@ function preProcessTreeDataStage3(data) {
 
 
 
+function calculateOffset(radius, padding, nodeCount) {
+    console.log("calculate offset");
+    console.log(`radius: ${radius}`);
+    console.log(`padding: ${padding}`);
+    console.log(`nodeCount: ${nodeCount}`);
+    const baseOffset = ((nodeCount - 1) * radius) + (((nodeCount - 1) * padding) / 2);
+    console.log(`base offset: ${baseOffset}`);
+    //const additionalOffset = Math.floor(nodeCount / 2) * (nodeCount % 2) * (radius + padding);
+    const additionalOffset = 0;
+    console.log(`additional offset: ${additionalOffset}`);
+    return baseOffset + additionalOffset;
+}
 
 
+
+function calculateOffsetOld(radius, padding, nodeCount) {
+    console.log("calculate offset");
+    console.log(`radius: ${radius}`);
+    console.log(`padding: ${padding}`);
+    console.log(`nodeCount: ${nodeCount}`);
+    const baseOffset = (radius + padding) * Math.floor(nodeCount / 2);
+    console.log(`base offset: ${baseOffset}`);
+    const additionalOffset = Math.floor(nodeCount / 2) * (nodeCount % 2) * (radius + padding);
+    console.log(`additional offset: ${additionalOffset}`);
+    return baseOffset + additionalOffset;
+}
 
 
 
