@@ -80,7 +80,7 @@ const createNewPerson = (dataModel) => (req, res, next) => {
             sendResponse(res, 200, response);
         })
         .catch(error => {
-            logger.error("Failed to retrieve people list", error.message);
+            logger.error("Failed to create person", error.message);
 
             const errorResponse = {
                 code: "FAILED",

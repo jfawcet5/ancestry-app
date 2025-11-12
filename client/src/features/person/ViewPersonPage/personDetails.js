@@ -3,6 +3,7 @@ import styles from "./personDetails.module.css"
 import SimpleDisplayField from "../../../shared/components/simpleDisplayField";
 import EditableText from "../../../shared/components/editableText";
 import InputPopup from "../../../shared/components/InputPopup";
+import DynamicDateField from "../../../shared/components/DynamicDateField";
 
 export default function PersonDetails({personData, editMode=false, onSelect}) {
     const fullname = `${personData.firstName} ${personData.middleName} ${personData.lastName}`;
@@ -49,11 +50,10 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
             </div>
             <div className={`${styles.leftColumn} ${styles.flexDetails}`}>
                 <SimpleDisplayField label="Born" >
-                    <EditableText text={personData.birthDate}
-                                  isEditable={editMode}
-                                  inputType="date"
-                                  inputName="birthDate"
-                                  onChange={(e) => onSelect(e.target.name, e.target.value)}
+                    <DynamicDateField name="birthDate"
+                                      readonly={!editMode}
+                                      value={personData.birthDate}
+                                      onChange={(e) => onSelect(e.target.name, e.target.value)}
                     />
                     <EditableText text={personData.birthLocation}
                                   isEditable={editMode}
@@ -63,11 +63,10 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
                 </SimpleDisplayField>
 
                 <SimpleDisplayField label="Died">
-                    <EditableText text={personData.deathDate}
-                                  isEditable={editMode}
-                                  inputType="date"
-                                  inputName="deathDate"
-                                  onChange={(e) => onSelect(e.target.name, e.target.value)}
+                    <DynamicDateField name="deathDate"
+                                      readonly={!editMode}
+                                      value={personData.deathDate}
+                                      onChange={(e) => onSelect(e.target.name, e.target.value)}
                     />
                     <EditableText text={personData.deathLocation}
                                   isEditable={editMode}

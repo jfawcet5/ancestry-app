@@ -1,0 +1,34 @@
+.inputContainer {
+    display: inline-flex;
+    border: solid 1px black;
+    border-radius: 0.2rem;
+    height: 1.25rem;
+    text-align: center;
+}
+
+.dateInputSection {
+    font-size: 0.8rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    width: 1.6em;
+    padding: 0;
+    margin: 0 0.15em;
+    text-align: center;
+    height: 100%;
+    line-height: 1;
+}
+
+.dateInputSection.year {
+    width: 2rem;
+}
+
+.dateInputSection:focus {
+    background-color: #cae3ff;
+    border: none;
+}
+
+.inputContainer:focus-within {
+    border: 2px solid #0058a0;
+    box-shadow: 0 0 0 2px rgba(0,120,215,0.3);
+}

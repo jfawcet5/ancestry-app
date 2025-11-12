@@ -11,11 +11,11 @@ function generateOutputPayload(data) {
             last: data.last_name ?? ""
         },
         birth: {
-            date: `${data.birth_month ?? 0}/${data.birth_day ?? 0}/${data.birth_year ?? 0}`,
+            date: `${data.birth_year ?? 0}/${data.birth_month ?? ''}/${data.birth_day ?? ''}`,
             location: data.birth_location
         },
         death: {
-            date: `${data.death_month ?? 0}/${data.death_day ?? 0}/${data.death_year ?? 0}`,
+            date: `${data.death_year ?? 0}/${data.death_month ?? ''}/${data.death_day ?? ''}`,
             location: data.death_location
         },
         relations: {
@@ -35,11 +35,11 @@ function extractDate(dateString) {
     }
 
     // Expecting format: "yyyy-mm-dd"
-    const values = dateString.split("-");
+    const values = dateString.split("/");
     return {
         year: values[0],
-        ...(values[1] && {month: values[1]}),
-        ...(values[2] && {day: values[2]})
+        month: values[1] ? values[1] : "",
+        day: values[2] ? values[2] : ""
     };
 }
 

@@ -5,10 +5,7 @@ import { Link } from 'react-router-dom';
 
 import styles from "./TreeView.module.css";
 
-import { transformSearchResult } from '../../../shared/utilities/transform';
-
 import TreeViewPresentation from './treeViewPresentation';
-import SearchPersonPage from '../../person/SearchPersonPage';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
@@ -65,7 +62,7 @@ export default function ViewTreePage() {
     };
 
     const handleSelection = (id) => {
-        navigate(`/treeview/${id}`);
+        navigate(`/treeview/${id}`, {replace: true});
     }
 
     return <div>
@@ -168,10 +165,13 @@ function preProcessTreeDataStage2(data) {
 
         console.log(`parent start x: ${p_x}`)
 
+        // Iterate through parents and set positions
         for (let parent of group.parents) {
             parent.x = p_x;
             parent.y = gen1_y;
 
+            // If this parent has parents (the tree continues up) then
+            // place an up arrow above this parent
             if (parent.parents != null) {
                 console.log(parent.name);
 
@@ -192,6 +192,7 @@ function preProcessTreeDataStage2(data) {
             p_x += padding + (radius * 2);
         }
 
+        // Create background rectangle for the parents
         let pWidth = (parentCount * radius * 2) + ((parentCount + 1) * padding)
 
         let pRectLeft = x_pos + centerX - (pWidth / 2);
@@ -217,11 +218,14 @@ function preProcessTreeDataStage2(data) {
         let c_x = childStartX + x_pos;
         console.log(`absolute start x: ${c_x}`);
 
+        // Iterate through children in the group and set positions
         for (let child of group.children) {
             console.log(child)
             child.x = c_x;
             child.y = gen2_y;
 
+            // If this child has children (tree continues down) the
+            // place a down arrow below this child
             if (child.children != null) {
                 console.log(child.name);
 
@@ -242,6 +246,7 @@ function preProcessTreeDataStage2(data) {
             c_x += padding + (radius * 2);
         }
 
+        // Create a background rectangle for the children
         if (childCount > 1) {
             let cWidth = (childCount * radius * 2) + ((childCount + 1) * padding)
 
@@ -258,6 +263,7 @@ function preProcessTreeDataStage2(data) {
             group.shapes.backgroundRects.push(childBackground)
         }
 
+        // Make a vertical line between the parents and children of this group
         let connector = {
             x1: centerX + x_pos,
             y1: gen1_y + radius + (2 * padding),
@@ -328,8 +334,5 @@ function calculateOffset(radius, padding, nodeCount) {
     console.log(`nodeCount: ${nodeCount}`);
     const baseOffset = ((nodeCount - 1) * radius) + (((nodeCount - 1) * padding) / 2);
     console.log(`base offset: ${baseOffset}`);
-    //const additionalOffset = Math.floor(nodeCount / 2) * (nodeCount % 2) * (radius + padding);
-    const additionalOffset = 0;
-    console.log(`additional offset: ${additionalOffset}`);
-    return baseOffset + additionalOffset;
+    return baseOffset;
 }

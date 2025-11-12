@@ -60,18 +60,21 @@ function createNewPerson(newPersonData) {
 
     mockPeople.push(newPerson);
 
+    let [birthYear, birthMonth, birthDay] = (newPersonData.birthDate.split("/") || []).map(v => v === "" ? null : v);
+    let [deathYear, deathMonth, deathDay] = (newPersonData.deathDate.split("/") || []).map(v => v === "" ? null : v);
+
     const query = "SELECT create_person($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) AS id";
     const values = [newPersonData.firstName,
                     newPersonData.middleName,
                     newPersonData.lastName,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
+                    birthYear,
+                    birthMonth,
+                    birthDay,
+                    null, // birth location
+                    deathYear,
+                    deathMonth,
+                    deathDay,
+                    null, // death location
                     newPersonData.gender
     ];
 

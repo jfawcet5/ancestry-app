@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+import DynamicDateField from "../../../shared/components/DynamicDateField";
+
 import styles from "./createPerson.module.css";
 
 export default function CreatePersonPresentation({onChange, onSubmit}) {
@@ -28,11 +30,15 @@ export default function CreatePersonPresentation({onChange, onSubmit}) {
                 <div className={styles.fieldContainer}>
                     <div className={styles.inputField}>
                         <label>Birth Date</label>
-                        <input type="month" name="birthDate" onChange={onChange} required></input>
+                        <DynamicDateField name="birthDate"
+                                      onChange={onChange}
+                        />
                     </div>
                     <div className={styles.inputField}>
                         <label>Death Date</label>
-                        <input type="text" name="deathDate" onChange={onChange}></input>
+                        <DynamicDateField name="deathDate"
+                                      onChange={onChange}
+                        />
                     </div>
                 </div>
 

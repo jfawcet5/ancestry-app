@@ -55,11 +55,13 @@ export default function TreeViewPresentation({personData,
                         key={i}
                         x={r.x}
                         y={r.y}
+                        rv="10"
+                        rx="10"
                         width={r.width}
                         height={r.height}
                         stroke="#999"
                         strokeWidth="2"
-                        fill="#FF0000"
+                        fill="#FFFFFF"
                     />
                     ))
                 }
@@ -81,6 +83,7 @@ export default function TreeViewPresentation({personData,
                         key={i}
                         points={e.points}
                         onClick={() => onSelect(e.id)}
+                        className={styles.clickable}
                     />
                     ))
                 }
@@ -96,7 +99,8 @@ export default function TreeViewPresentation({personData,
 
 function PersonNode({ person, isFocus, onClick, size }) {
     const radius = size;
-    const fill = isFocus ? "#ffdd88" : "#cce5ff";
+    //const fill = isFocus ? "#ffdd88" : "#cce5ff";
+    const fill = isFocus ? "#ffdd88" : "#91b8f9";
     return (
       <g
         transform={`translate(${person.x}, ${person.y})`}
