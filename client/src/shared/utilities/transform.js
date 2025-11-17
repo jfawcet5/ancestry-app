@@ -3,6 +3,7 @@ export function transformPersonData(apiData) {
     console.log("transform person data");
     console.log(apiData);
     return {
+        id: apiData.id,
         firstName: apiData.name.first,
         middleName: apiData.name.middle,
         lastName: apiData.name.last,

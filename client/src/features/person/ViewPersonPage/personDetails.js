@@ -4,9 +4,12 @@ import SimpleDisplayField from "../../../shared/components/simpleDisplayField";
 import EditableText from "../../../shared/components/editableText";
 import InputPopup from "../../../shared/components/InputPopup";
 import DynamicDateField from "../../../shared/components/DynamicDateField";
+import { Link } from "react-router-dom";
 
 export default function PersonDetails({personData, editMode=false, onSelect}) {
     const fullname = `${personData.firstName} ${personData.middleName} ${personData.lastName}`;
+    console.log("Person Data")
+    console.log(personData);
 
     const isEditable = false;
 
@@ -47,12 +50,14 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
         <form className={styles.container}>
             <div className={styles.banner}>
                 {nameBanner}
+                {!editMode && <Link to={`/treeview/${personData.id}`}>{">"}</Link>}
             </div>
             <div className={`${styles.leftColumn} ${styles.flexDetails}`}>
                 <SimpleDisplayField label="Born" >
                     <DynamicDateField name="birthDate"
                                       readonly={!editMode}
                                       value={personData.birthDate}
+                                      nullValue="n/a"
                                       onChange={(e) => onSelect(e.target.name, e.target.value)}
                     />
                     <EditableText text={personData.birthLocation}
@@ -66,6 +71,7 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
                     <DynamicDateField name="deathDate"
                                       readonly={!editMode}
                                       value={personData.deathDate}
+                                      nullValue="n/a"
                                       onChange={(e) => onSelect(e.target.name, e.target.value)}
                     />
                     <EditableText text={personData.deathLocation}

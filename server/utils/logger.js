@@ -1,20 +1,22 @@
 const fs = require('fs');
+const config = require("../config/env");
 const path = require('path');
 
 const LOG_LEVELS = {
     DEBUG: 0,
     INFO: 1,
     WARN: 2,
-    ERROR: 3
+    ERROR: 3,
+    OFF: 99
 };
 
 
 class Logger{
-    constructor(level = INFO, name="App") {
+    constructor(level = "INFO", name="App") {
         // Only prints logs when level if >= logger level
         this.level = level;
         this.name = name;
-        this.logDir = path.resolve('../test/logs');
+        this.logDir = path.resolve(config.LOG_PATH);
     }
 
     _canLogLevel(level) {
@@ -52,6 +54,10 @@ class Logger{
     }
 
     saveToFile(name, data, ext="txt") {
+        if (this.level === "OFF") {
+            return;
+        }
+
         const timestamp = new Date().toISOString().replace("/[:.]/g", "-");
         const extension = ext ? `.${ext}` : '';
         const fileName = `${name}_${timestamp}${extension}`;
@@ -69,5 +75,8 @@ class Logger{
     }
 }
 
-const logger = new Logger(process.env.LOG_LEVEL || "DEBUG", "Server")
+let log_level = config.LOG_LEVEL;
+console.log(`Log level: ${log_level}`);
+
+const logger = new Logger(log_level, "Server")
 module.exports = { logger };

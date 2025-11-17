@@ -13,6 +13,7 @@ const months = [
 export default function DynamicDateField({value = "",
                                           name,
                                           readonly=false,
+                                          nullValue="N/A",
                                             mainText,
                                             subText = null,
                                             linkTo = null,
@@ -45,14 +46,26 @@ export default function DynamicDateField({value = "",
         }
     }
 
+
+
     if (readonly) {
-        return (
-            <div>
-                <span>{dateFields.year}</span>
-                {dateFields.month && <span>/{dateFields.month}</span>}
-                {dateFields.day && <span>/{dateFields.day}</span>}
-            </div>
-        )
+        if (year === "" && month === "" && day === "") {
+            console.log("No date provided");
+            return (
+                <div>
+                    <span>{nullValue}</span>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div>
+                    <span>{dateFields.year}</span>
+                    {dateFields.month && <span>/{dateFields.month}</span>}
+                    {dateFields.day && <span>/{dateFields.day}</span>}
+                </div>
+            )
+        }
     }
 
     /*

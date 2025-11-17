@@ -11,11 +11,11 @@ function generateOutputPayload(data) {
             last: data.last_name ?? ""
         },
         birth: {
-            date: `${data.birth_year ?? 0}/${data.birth_month ?? ''}/${data.birth_day ?? ''}`,
+            date: `${data.birth_year ?? ''}/${data.birth_month ?? ''}/${data.birth_day ?? ''}`,
             location: data.birth_location
         },
         death: {
-            date: `${data.death_year ?? 0}/${data.death_month ?? ''}/${data.death_day ?? ''}`,
+            date: `${data.death_year ?? ''}/${data.death_month ?? ''}/${data.death_day ?? ''}`,
             location: data.death_location
         },
         relations: {
