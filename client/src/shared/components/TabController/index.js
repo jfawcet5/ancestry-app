@@ -37,8 +37,8 @@ export function TabController({ children }) {
 }
 
 
-function Tab({children})  {
+export function Tab({children})  {
     return children;
 }
 
-export default {TabController, Tab};
+//export default {TabController, Tab};
