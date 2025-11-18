@@ -5,32 +5,29 @@ on:
     branches:
       - main
 
-permissions:
-  pages: write
-  id-token: write
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd client
+          npm ci   # uses the client/package-lock.json
 
-      - name: Build project
-        run: npm run build
+      - name: Build
+        run: |
+          cd client
+          npm run build
 
-      - name: Upload build output
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to Pages
+        uses: actions/upload-pages-artifact@v2
         with:
-          path: build
-
-      - name: Deploy
-        uses: actions/deploy-pages@v4
+          path: client/dist   # or client/build if using CRA
