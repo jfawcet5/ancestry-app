@@ -1,5 +1,5 @@
 //import React, { Children } from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 //import EditableText from './editableText';
 
 import styles from "./simpleDisplayField.module.css";
@@ -26,7 +26,7 @@ export default function SimpleDisplayField({label = null,
                                             children
 }) {
     const hasLabel = !!label;
-    const isLink = !!linkTo;
+    //const isLink = !!linkTo;
 
     const containerClass = `${styles.container} ${hasLabel ? styles["container-labeled"] : styles["container-single"]}`;
 
