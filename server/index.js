@@ -14,41 +14,12 @@ const allowedOrigins = ["https://jfawcet5.github.io/ancestry-app/", "https://jfa
 
 const app = express();
 
-app.options('*', (req, res) => {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Headers', '*');
-	res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-	return res.sendStatus(200);
-  });
-
-
 app.use((req, res, next) => {
 	logger.info("Incoming request", `${req.method} ${req.url}`);
 	next();
 })
 
-app.use(cors({
-	origin: function(origin, callback) {
-		logger.debug("CORS evaluating: ", origin);
-		
-		if (!origin) {
-			logger.debug("Valid empty origin");
-			return callback(null, true);
-		} 
-
-		if (allowedOrigins.indexOf(origin) !== -1) {
-			logger.debug("Valid origin");
-			callback(null, true);
-		}
-		else {
-			logger.debug("Denied request")
-			callback(new Error("Not allowed by CORS"));
-		}
-	},
-	credentials: true,
-	methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-	allowedHeaders: ["Content-Type", "Authorization"]
-}));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
