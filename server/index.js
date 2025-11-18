@@ -14,8 +14,18 @@ const allowedOrigins = ["https://jfawcet5.github.io/ancestry-app/", "https://jfa
 
 const app = express();
 app.use(cors({
-	origin: allowedOrigins,
-	credentials: true
+	origin: function(origin, callback) {
+		if (!origin) return callback(null, true);
+		if (allowedOrigins.indexOf(origin) !== -1) {
+			callback(null, true);
+		}
+		else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
+	credentials: true,
+	methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+	allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(express.json());
 app.use(cookieParser());
