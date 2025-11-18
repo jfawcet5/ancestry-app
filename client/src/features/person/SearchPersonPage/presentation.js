@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+//import React, { useState, useEffect } from 'react';
+//import { useParams } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 
 import styles from "./SearchPerson.module.css";
 
-const ENDPOINT = process.env.REACT_APP_API_URL;
+//const ENDPOINT = process.env.REACT_APP_API_URL;
 
 export default function SearchPersonPresentation({searchResults, 
                                                   searchFilters,
@@ -15,7 +15,7 @@ export default function SearchPersonPresentation({searchResults,
                                                   onSelect}) {
     let resultsList = null;
 
-    if (pageType == "modal") {
+    if (pageType === "modal") {
         resultsList = searchResults.map(person => (
             <li key={person.id}>
                 <button onClick={(e) => onSelect(e, person)}>{`${person.name}`}</button>

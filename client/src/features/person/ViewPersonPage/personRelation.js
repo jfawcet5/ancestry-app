@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import SimpleDisplayField from "../../../shared/components/simpleDisplayField";
-import EditableText from "../../../shared/components/editableText";
+//import SimpleDisplayField from "../../../shared/components/simpleDisplayField";
+//import EditableText from "../../../shared/components/editableText";
 import InputPopup from '../../../shared/components/InputPopup';
 
 import styles from "./personRelation.module.css";

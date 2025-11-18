@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 
-import styles from "./TreeView.module.css";
+//import styles from "./TreeView.module.css";
+import { useApi } from '../../../shared/utilities/apiCall.js';
 
 import TreeViewPresentation from './treeViewPresentation';
 
-const ENDPOINT = process.env.REACT_APP_API_URL;
+//const ENDPOINT = process.env.REACT_APP_API_URL;
 
 
 
@@ -21,6 +22,8 @@ export default function ViewTreePage() {
     const [focusId, setFocusId] = useState();
     const [treeData, setTreeData] = useState({});
 
+    const apiCall = useApi();
+
 
     useEffect(() => {
         console.log("selected: ", id);
@@ -33,7 +36,8 @@ export default function ViewTreePage() {
         setFocusId(id);
         setSearchModalOpen(false);
 
-        fetch(`${ENDPOINT}/api/tree/${id}`)
+        //fetch(`${ENDPOINT}/api/tree/${id}`)
+        apiCall(`/tree/${id}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`The server responded with status: ${response.status}`);
@@ -54,7 +58,7 @@ export default function ViewTreePage() {
                 if (error.name === "AbortError") return;
             }
         );
-    }, [id]);
+    }, [id, apiCall]);
 
     const handleSearchResults = (results) => {
         setSearchModalOpen(true);
@@ -122,7 +126,7 @@ function preProcessTreeDataStage1(data) {
     for (let group of groups) {
         for (let parent of group.parents) {
             console.log(parent);
-            let parentData = data.gen1.find(item => item.id == parent.id);
+            let parentData = data.gen1.find(item => item.id === parent.id);
             console.log(parentData);
             if (parentData) {
                 parent.name = parentData.name;

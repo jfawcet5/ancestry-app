@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useState} from "react";
 import PopupModal from "../PopupModal";
 
 import {TabController, Tab} from "../TabController/index.js";

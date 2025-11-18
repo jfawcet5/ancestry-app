@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+//import { useParams } from 'react-router-dom';
 
 import CreatePersonPresentation from './presentation';
 
 import { useApi } from '../../../shared/utilities/apiCall.js';
 
-const ENDPOINT = process.env.REACT_APP_API_URL;
+//const ENDPOINT = process.env.REACT_APP_API_URL;
 
 export default function CreatePersonPage({pageType="page", onSelect}) {
 

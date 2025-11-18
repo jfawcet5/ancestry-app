@@ -11,7 +11,7 @@ export default function PersonDetails({personData, editMode=false, onSelect}) {
     console.log("Person Data")
     console.log(personData);
 
-    const isEditable = false;
+    //const isEditable = false;
 
     let nameBanner = <h2 className={styles.banner}>{fullname}</h2>;
 

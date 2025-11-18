@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+//import { useParams } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 
 import SearchPersonPresentation from './presentation';
 
-import { transformSearchResult } from '../../../shared/utilities/transform';
+//import { transformSearchResult } from '../../../shared/utilities/transform';
 
-import styles from "./SearchPerson.module.css";
+//import styles from "./SearchPerson.module.css";
 
 import { useApi } from '../../../shared/utilities/apiCall.js';
 
-const ENDPOINT = process.env.REACT_APP_API_URL;
+//const ENDPOINT = process.env.REACT_APP_API_URL;
 
 export default function SearchPersonPage({pageType = "page", onSelect}) {
 
@@ -91,6 +91,7 @@ export default function SearchPersonPage({pageType = "page", onSelect}) {
             .catch(error => {
                 console.log("failed to make api call");
             })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <SearchPersonPresentation searchResults={searchResults} 

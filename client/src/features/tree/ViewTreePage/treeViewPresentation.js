@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+//import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import SearchBar from '../../person/SearchPersonPage/searchBar';
@@ -6,7 +6,7 @@ import PopupModal from '../../../shared/components/PopupModal';
 
 import styles from "./TreeView.module.css";
 
-
+/*
 function ControlPanel() {
     return (
         <form className={styles.searchFilterContainer}>
@@ -16,7 +16,7 @@ function ControlPanel() {
         </form>
     )
 }
-
+*/
 
 export default function TreeViewPresentation({personData,
                                                 controlPanelOpen, 

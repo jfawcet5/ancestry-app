@@ -1,6 +1,6 @@
-import React, { Children } from 'react';
+//import React, { Children } from 'react';
 import { Link } from 'react-router-dom';
-import EditableText from './editableText';
+//import EditableText from './editableText';
 
 import styles from "./simpleDisplayField.module.css";
 
@@ -30,7 +30,7 @@ export default function SimpleDisplayField({label = null,
 
     const containerClass = `${styles.container} ${hasLabel ? styles["container-labeled"] : styles["container-single"]}`;
 
-    const mainContent = isLink ? <Link to={linkTo}>{mainText}</Link> : mainText;
+    //const mainContent = isLink ? <Link to={linkTo}>{mainText}</Link> : mainText;
 
     /*
     const mainComponent = isEditable ? <input type={inputType} value={mainText}></input> :

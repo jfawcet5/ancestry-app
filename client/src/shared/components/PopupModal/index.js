@@ -37,7 +37,7 @@ export default function PopupModal({isOpen,
         
         document.addEventListener('keydown', handleKeyDown);
         return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [isOpen]);
+    }, [isOpen, onClose]);
 
     if (!isOpen) {
         return null;

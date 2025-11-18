@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+//import { useParams } from 'react-router-dom';
 
 export function TabController({ children }) {
     const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -37,7 +37,7 @@ export function TabController({ children }) {
 }
 
 
-export function Tab({children})  {
+function Tab({children})  {
     return children;
 }
 

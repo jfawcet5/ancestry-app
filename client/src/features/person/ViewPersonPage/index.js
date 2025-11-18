@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 // Temporary
-import SearchSelector from '../../../shared/components/SearchSelector.js';
+//import SearchSelector from '../../../shared/components/SearchSelector.js';
 import ViewPersonPresentation from './presentation.js';
 
 import { transformPersonData } from '../../../shared/utilities/transform.js';
@@ -22,7 +22,7 @@ function ViewPersonPage() {
 
     const apiCall = useApi();
 
-    const [activeField, setActiveField] = useState("");
+    //const [activeField, setActiveField] = useState("");
 
     useEffect(() => {
         // Reset state each time a new ID is fetched.
@@ -62,7 +62,7 @@ function ViewPersonPage() {
             // Abort any ongoing requests during unmount/cleanup
             controller.abort();
         };
-    }, [id]);
+    }, [id, apiCall]);
 
     const handleSave = () => {
         console.log("save form data");

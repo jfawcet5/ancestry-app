@@ -1,12 +1,13 @@
-import React, { Children, useState } from 'react';
+import React, { useState } from 'react';
 
 import styles from "./DynamicDateField.module.css";
 
+/*
 const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
     "Sep", "Oct", "Nov", "Dec"
 ];
-
+*/
 
 
 
@@ -27,9 +28,6 @@ export default function DynamicDateField({value = "",
     const [year, month, day] = value.split("/");
     console.error("logging date");
     console.log(year, month, day);
-    const [dayValue, setDayValue] = useState(day);
-    const [monthValue, setMonthValue] = useState(month);
-    const [yearValue, setYearValue] = useState(year);
 
     const [dateFields, setDateFields] = useState({day: day, month: month, year: year});
     

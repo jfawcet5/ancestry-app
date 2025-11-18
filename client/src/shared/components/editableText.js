@@ -31,7 +31,7 @@ export default function EditableText({text,
         )
     }
 
-    const content = text || placeholder;
+    //const content = text || placeholder;
 
     return linkTo ? <Link to={linkTo} className={className}>{text}</Link>
                     :
