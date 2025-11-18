@@ -2,8 +2,13 @@
 import {Pool} from "pg";
 import config from "../config/env.js";
 
-const db = new Pool({
-    connectionString: config.DATABASE_URL
-});
+let db = null;
+
+if (config.DATABASE_URL) {
+    db = new Pool({
+        connectionString: config.DATABASE_URL,
+        connectionTimeoutMillis: 2000
+    });
+}
 
 export default db;
