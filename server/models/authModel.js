@@ -43,14 +43,16 @@ function getApplicationUser(email, password) {
         db.query(query, values)
         .then(response => {
             if (response != null) {
-                console.log(response);
+                //console.log(response);
                 let data = response.rows[0];
-                console.log(data.data);
+                //console.log(data.data);
+                logger.debug("Exit authenticationModel.getApplicationUser");
                 resolve(data.data);
             }
         })
         .catch((error => {
             logger.error("DB returned an error", error.message);
+            logger.debug("Exit authenticationModel.getApplicationUser");
             reject(error);
         }));
     })

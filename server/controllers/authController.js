@@ -26,6 +26,7 @@ const createNewApplicationUser = (dataModel) => (req, res, next) => {
         return dataModel.createNewApplicationUser(email, username, invite, hash);
     })
     .then(response => {
+        logger.debug("Enter AuthenticationController.createNewApplicationUser");
         sendResponse(res, 200, response);
     })
 }
@@ -34,13 +35,16 @@ const getApplicationUser = (dataModel) => (req, res, next) => {
     logger.debug("Enter AuthenticationController.getApplicationUser");
     logger.debug(JSON.stringify(req.body));
     const {email, password} = req.body;
-    console.log(email, password);
+    //console.log(email, password);
 
     dataModel.getApplicationUser(email, password)
     .then(response => {
         if (!response) {
+            logger.error("Invalid response received from data model");
             throw new Error("");
         }
+
+        logger.debug("Received a response from data model. Comparing verifying credentials");
 
         const user = response;
 
@@ -48,8 +52,11 @@ const getApplicationUser = (dataModel) => (req, res, next) => {
     })
     .then(({valid, user}) => {
         if (!valid) {
+            logger.error("Invalid user credentials provided");
             throw new Error("");
         }
+
+        logger.debug("Validated user. Setting cookie");
 
         const token = createToken(user);
         console.log(token);
@@ -62,6 +69,7 @@ const getApplicationUser = (dataModel) => (req, res, next) => {
         });
 
         res.json({message: "success"});
+        logger.debug("Exit AuthenticationController.getApplicationUser");
     })
     .catch(error => {
         logger.error("Failed to create person", error.message);
@@ -75,46 +83,8 @@ const getApplicationUser = (dataModel) => (req, res, next) => {
 
         //saveJsonPayload(response, "createNewPerson_output");
         sendResponse(res, 500, response);
+        logger.debug("Exit AuthenticationController.getApplicationUser");
     })
-}
-
-
-
-// function that takes a data model (DI) and returns an express middleware
-// function that uses the data model to retrieve the correct data. 
-const getPersonById = (dataModel) => (req, res, next) => {
-    logger.debug("Enter peopleController.GetPersonById", JSON.stringify(req.params));
-    //console.log(req.params);
-    dataModel.getPersonById(req.params.id)
-        .then(person => {
-            if (person === undefined || person === null) {
-                logger.error("Controller did not receive a valid response");
-                logger.debug("Exit peopleController.GetPersonById");
-                throw new error("person not found");
-            }
-            logger.info("Controller successfully received person from DB");
-
-            const response = formatResponse(true, "Success", person);
-
-            saveJsonPayload(response, "getPersonById_output");
-            sendResponse(res, 200, response);
-            logger.debug("Exit peopleController.GetPersonById");
-        })
-        .catch(error => {
-            logger.error(`Controller unable to fetch person ${req.params.id}`, error.message);
-            
-            const errorResponse = {
-                code: "NOT_FOUND",
-                message: "Failed to retrieve person"
-            };
-
-            const response = formatResponse(false, "Operation Failed", null, errorResponse);
-
-            saveJsonPayload(response, "getPersonById_output");
-            sendResponse(res, 500, response);
-
-            logger.debug("Exit peopleController.GetPersonById");
-        })
 }
 
 
