@@ -21,14 +21,19 @@ jobs:
         run: |
           cd client
           npm ci   # uses the client/package-lock.json
+          working-directory: ./client
 
       - name: Build
         run: |
           cd client
           npm install
           npm run build
+          working-directory: ./client
 
-      - name: Deploy to Pages
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: client/build
+      
+      - name: Deploy to Github Pages
+        uses: actions/deploy-pages@v1
