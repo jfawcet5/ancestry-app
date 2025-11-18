@@ -18,17 +18,17 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
+        working-directory: ./client
         run: |
           cd client
           npm ci   # uses the client/package-lock.json
-          working-directory: ./client
 
       - name: Build
+        working-directory: ./client
         run: |
           cd client
           npm install
           npm run build
-          working-directory: ./client
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
