@@ -1,12 +1,77 @@
-//const db = require("./db");
-//const { generateOutputPayload, parseInputJson } = require("../utils/transformer.js");
 import db from "./db.js";
+//const { generateOutputPayload, parseInputJson } = require("../utils/transformer.js");
 import { generateOutputPayload, parseInputJson } from "../utils/transformer.js";
 import logger from "../utils/logger.js";
 
-const mockPeople = [];
 
-let nextId = 6;
+function createNewApplicationUser(email, username, invite, passwordHash) {
+    logger.debug("Enter authenticationModel.createNewApplicationUser");
+    const query = "SELECT create_user_from_invite($1,$2, $3, $4) as id";
+    const values = [
+        email, // email
+        username, // username
+        passwordHash, // password hash
+        invite  // invite code
+    ]
+    return new Promise((resolve, reject) => {
+        db.query(query, values)
+        .then(response => {
+            if (response != null) {
+                console.log(response);
+                let data = response.rows[0];
+                console.log(data);
+                resolve(data);
+            }
+        })
+        .catch((error => {
+            logger.error("DB returned an error", error.message);
+            reject(error);
+        }));
+    })
+}
+
+
+function getApplicationUser(email, password) {
+    logger.debug("Enter authenticationModel.getApplicationUser");
+    console.log(email, password);
+    const query = "SELECT get_application_user($1) as data";
+    const values = [
+        email // email
+    ]
+
+    return new Promise((resolve, reject) => {
+        db.query(query, values)
+        .then(response => {
+            if (response != null) {
+                console.log(response);
+                let data = response.rows[0];
+                console.log(data.data);
+                resolve(data.data);
+            }
+        })
+        .catch((error => {
+            logger.error("DB returned an error", error.message);
+            reject(error);
+        }));
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function getPersonById(id) {
     logger.debug("Enter peopleModel.GetPersonById", id);
@@ -18,7 +83,7 @@ function getPersonById(id) {
                 logger.debug("Received response from DB");
 
                 console.log(responseJSON);
-                let data = responseJSON.rows[0].data;
+                data = responseJSON.rows[0].data;
     
                 const result = generateOutputPayload(data);
                 
@@ -62,8 +127,8 @@ function createNewPerson(newPersonData) {
 
     mockPeople.push(newPerson);
 
-    let [birthYear, birthMonth, birthDay] = (newPersonData.birthDate?.split("/") || []).map(v => v === "" ? null : v);
-    let [deathYear, deathMonth, deathDay] = (newPersonData.deathDate?.split("/") || []).map(v => v === "" ? null : v);
+    let [birthYear, birthMonth, birthDay] = (newPersonData.birthDate.split("/") || []).map(v => v === "" ? null : v);
+    let [deathYear, deathMonth, deathDay] = (newPersonData.deathDate.split("/") || []).map(v => v === "" ? null : v);
 
     const query = "SELECT create_person($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) AS id";
     const values = [newPersonData.firstName,
@@ -202,7 +267,7 @@ function getTreeFocusData(id) {
                 logger.debug("Received response from DB");
 
                 console.log(responseJSON);
-                let data = responseJSON.rows[0].data;
+                data = responseJSON.rows[0].data;
                 //console.log(data);
                 
                 logger.debug("Exit peopleModel.GetTreeFocusData", id);
@@ -219,9 +284,6 @@ function getTreeFocusData(id) {
 }
 
 export default {
-    getPersonById,
-    createNewPerson,
-    getPeopleList,
-    updatePersonById,
-    getTreeFocusData
+    createNewApplicationUser,
+    getApplicationUser
 }

@@ -1,8 +1,8 @@
-function flattenResponse(data) {
+export function flattenResponse(data) {
     return;
 }
 
-function generateOutputPayload(data) {
+export function generateOutputPayload(data) {
     return {
         id: data.id,
         name: {
@@ -43,7 +43,7 @@ function extractDate(dateString) {
     };
 }
 
-function parseInputJson(data) {
+export function parseInputJson(data) {
     const birthDate = extractDate(data.birthDate);
     const deathDate = extractDate(data.deathDate);
     return {
@@ -63,4 +63,4 @@ function parseInputJson(data) {
     }
 }
 
-module.exports = { flattenResponse, generateOutputPayload, parseInputJson };
+//export default { flattenResponse, generateOutputPayload, parseInputJson };

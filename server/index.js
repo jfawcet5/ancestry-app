@@ -1,14 +1,22 @@
 //server/index.js
-const express = require("express");
-const cors = require("cors");
-const { logger } = require("./utils/logger.js");
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+//const cors = require("cors");
+//const cookieParser = require("cookie-parser");
+import logger from "./utils/logger.js";
 
-const config = require("./config/env");
-const apiRouter = require("./routes/apiRoutes.js");
+import config from "./config/env.js";
+//const apiRouter = require("./routes/apiRoutes.js");
+import apiRouter from "./routes/apiRoutes.js";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+	origin: "http://localhost:3000",
+	credentials: true
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use((req, res, next) => {
 	logger.info("Incoming request", `${req.method} ${req.url}`);

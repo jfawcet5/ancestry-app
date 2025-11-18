@@ -1,6 +1,9 @@
-const fs = require('fs');
-const config = require("../config/env");
-const path = require('path');
+//const fs = require('fs');
+//const config = require("../config/env");
+//const path = require('path');
+import fs from "fs";
+import path from "path";
+import config from "../config/env.js";
 
 const LOG_LEVELS = {
     DEBUG: 0,
@@ -79,4 +82,4 @@ let log_level = config.LOG_LEVEL;
 console.log(`Log level: ${log_level}`);
 
 const logger = new Logger(log_level, "Server")
-module.exports = { logger };
+export default logger;

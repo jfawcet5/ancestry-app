@@ -8,6 +8,8 @@ import ViewPersonPresentation from './presentation.js';
 import { transformPersonData } from '../../../shared/utilities/transform.js';
 import { computePersonDiff } from '../../../shared/utilities/computeDiff.js';
 
+import { useApi } from '../../../shared/utilities/apiCall.js';
+
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
 function ViewPersonPage() {
@@ -17,6 +19,8 @@ function ViewPersonPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
+
+    const apiCall = useApi();
 
     const [activeField, setActiveField] = useState("");
 
@@ -31,7 +35,8 @@ function ViewPersonPage() {
         const signal = controller.signal;
 
         // Fetch person data from backend
-        fetch(`${ENDPOINT}/api/people/${id}`, {signal})
+        //fetch(`${ENDPOINT}/api/people/${id}`, {signal})
+        apiCall(`/people/${id}`, {signal})
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`The server responded with status: ${response.status}`);
@@ -48,8 +53,8 @@ function ViewPersonPage() {
             .catch((error) => {
                 console.error(`Failed to load person: ${id}`, error);
                 // Ignore abort errors as they are expected
-                if (error.name === "AbortError") return;
                 setLoading(false);
+                if (error.name === "AbortError") return;
                 setError("Failed to load person");
             });
         
@@ -131,7 +136,7 @@ function ViewPersonPage() {
         });
     }
 
-    if (loading || !personData) {
+    if (loading || (!personData && !error)) {
         return <p>Loading...</p>
     }
     if (error) {

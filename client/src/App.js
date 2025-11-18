@@ -13,6 +13,8 @@ import ViewPersonPage from './features/person/ViewPersonPage/index.js';
 import CreatePersonPage from './features/person/CreatePersonPage/index.js';
 import SearchPersonPage from './features/person/SearchPersonPage/index.js';
 import ViewTreePage from './features/tree/ViewTreePage/index.js';
+import LoginPage from './pages/loginPage.js';
+import RegisterPage from './pages/registerPage.js';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
@@ -28,6 +30,8 @@ function App() {
           <Route path="/create" element={<CreatePersonPage />}/>
           <Route path="/treeview" element={<ViewTreePage />}/>
           <Route path="/treeview/:id" element={<ViewTreePage />}/>
+          <Route path="/login" element={<LoginPage />}/>
+          <Route path="/register" element={<RegisterPage />}/>
         </Routes>
       </PageLayout>
     </Router>

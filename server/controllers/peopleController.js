@@ -1,7 +1,9 @@
-const { formatResponse, sendResponse } = require("../utils/response.js");
-const { parseInputJson } = require("../utils/transformer.js");
+//const { formatResponse, sendResponse } = require("../utils/response.js");
+//const { parseInputJson } = require("../utils/transformer.js");
+import {formatResponse, sendResponse} from "../utils/response.js";
+import { parseInputJson } from "../utils/transformer.js";
 
-const { logger } = require("../utils/logger.js");
+import logger from "../utils/logger.js";
 
 function saveJsonPayload(bodyJSON, logFileName, logMessage="Saved file:") {
     const fileName = logger.saveToFile(logFileName, bodyJSON, "json");
@@ -11,7 +13,7 @@ function saveJsonPayload(bodyJSON, logFileName, logMessage="Saved file:") {
 }
 
 function generateSearchFilters(queryString) {
-    flattened = parseInputJson(queryString);
+    let flattened = parseInputJson(queryString);
 
     let filters = [];
 
@@ -269,7 +271,7 @@ const getTreeFocusData = (dataModel) => (req, res, next) => {
 }
 
 
-module.exports = {
+export default {
     getPersonById,
     createNewPerson,
     getPeopleList,

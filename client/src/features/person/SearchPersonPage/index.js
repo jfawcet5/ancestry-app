@@ -9,12 +9,16 @@ import { transformSearchResult } from '../../../shared/utilities/transform';
 
 import styles from "./SearchPerson.module.css";
 
+import { useApi } from '../../../shared/utilities/apiCall.js';
+
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
 export default function SearchPersonPage({pageType = "page", onSelect}) {
 
     const [searchFilters, setSearchFilters] = useState({});
     const [searchResults, setSearchResults] = useState([]);
+
+    const apiCall = useApi();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,7 +32,8 @@ export default function SearchPersonPage({pageType = "page", onSelect}) {
         e.preventDefault();
 
         const params = new URLSearchParams(searchFilters).toString();
-        fetch(`${ENDPOINT}/api/people?${params}`)
+        //fetch(`${ENDPOINT}/api/people?${params}`)
+        apiCall(`/people/?${params}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`The server responded with status: ${response.status}`);
@@ -61,7 +66,8 @@ export default function SearchPersonPage({pageType = "page", onSelect}) {
     useEffect(() => {
         if (pageType === "modal") return;
 
-        fetch(`${ENDPOINT}/api/people/`)
+        //fetch(`${ENDPOINT}/api/people/`)
+        apiCall(`/people/`)
             .then(response => {
                 console.log(response);
                 return response.json();

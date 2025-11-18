@@ -1,4 +1,4 @@
-function formatResponse(success, message, data, error=null, meta={}) {
+export function formatResponse(success, message, data, error=null, meta={}) {
     return {
         success: success,
         message: message,
@@ -8,8 +8,8 @@ function formatResponse(success, message, data, error=null, meta={}) {
     };
 }
 
-function sendResponse(res, status, bodyJSON) {
+export function sendResponse(res, status, bodyJSON) {
     res.status(status).send(bodyJSON);
 }
 
-module.exports = { sendResponse, formatResponse };
+//export default { formatResponse, sendResponse };

@@ -5,12 +5,16 @@ import { Link } from 'react-router-dom';
 
 import styles from "./SearchPerson.module.css";
 
+import { useApi } from '../../../shared/utilities/apiCall.js';
+
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
 
 
 export default function SearchBar({onSetSearchResults, children}) {
     const [searchFilters, setSearchFilters] = useState({});
+
+    const apiCall = useApi();
     
     const handleSearchFilterChange = (e) => {
         const { name, value } = e.target;
@@ -26,7 +30,8 @@ export default function SearchBar({onSetSearchResults, children}) {
 
         const params = new URLSearchParams(searchFilters).toString();
 
-        fetch(`${ENDPOINT}/api/people?${params}`)
+        //fetch(`${ENDPOINT}/api/people?${params}`)
+        apiCall(`/people/?${params}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`The server responded with status: ${response.status}`);

@@ -1,9 +1,15 @@
-const express = require("express");
+import express from "express";
 const apiRouter = express.Router();
 
-const peopleRouter = require("./peopleRoutes.js");
-const relationRouter = require("./relationRoutes.js");
-const treeRouter = require("./treeRoutes.js");
+//const peopleRouter = require("./peopleRoutes.js");
+//const relationRouter = require("./relationRoutes.js");
+//const treeRouter = require("./treeRoutes.js");
+//const authenticationRouter = require("./authRoutes.js");
+import peopleRouter from "./peopleRoutes.js"
+import relationRouter from "./relationRoutes.js";
+import treeRouter from "./treeRoutes.js";
+import authenticationRouter from "./authRoutes.js";
+import {auth} from "../middleware/auth.js"
 
 
 apiRouter.get("/hello", (req, res) => {
@@ -18,8 +24,9 @@ apiRouter.get("/marriages/", (req, res) => {
 	res.send("<h1>marriages</h1>");
 });
 
-apiRouter.use("/people/", peopleRouter);
+apiRouter.use("/auth", authenticationRouter);
+apiRouter.use("/people/", auth, peopleRouter);
 apiRouter.use("/relations/", relationRouter);
-apiRouter.use("/tree", treeRouter);
+apiRouter.use("/tree", auth, treeRouter);
 
-module.exports = apiRouter;
+export default apiRouter;

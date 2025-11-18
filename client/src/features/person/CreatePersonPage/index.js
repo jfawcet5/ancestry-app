@@ -3,11 +3,15 @@ import { useParams } from 'react-router-dom';
 
 import CreatePersonPresentation from './presentation';
 
+import { useApi } from '../../../shared/utilities/apiCall.js';
+
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
 export default function CreatePersonPage({pageType="page", onSelect}) {
 
     const [formData, setFormData] = useState({});
+
+    const apiCall = useApi();
 
     const handleChange = (e) => {
         console.log('presentation handle change');
@@ -33,7 +37,8 @@ export default function CreatePersonPage({pageType="page", onSelect}) {
             body: JSON.stringify(formData)
           }
 
-        fetch(`${ENDPOINT}/api/people/`, reqBody)
+        //fetch(`${ENDPOINT}/api/people/`, reqBody)
+        apiCall(`/people`, reqBody)
           .then(response => {
             if (!response.ok) {
                 console.error('error');
