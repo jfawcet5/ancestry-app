@@ -57,7 +57,7 @@ const getApplicationUser = (dataModel) => (req, res, next) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: 1000 * 60 * 60 * 24
         });
 

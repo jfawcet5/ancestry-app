@@ -19,7 +19,12 @@ app.use((req, res, next) => {
 	next();
 })
 
-app.use(cors());
+app.use(cors({
+	origin: "https://jfawcet5.github.io",
+	credentials: true,
+	methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+	allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express.json());
 app.use(cookieParser());
 
