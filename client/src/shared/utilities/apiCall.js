@@ -11,6 +11,7 @@ export function useApi() {
         const apiBase = user ? "/api" : "/api/demo";
         const apiURL = `${API_TARGET}${apiBase}${endpoint}`
 
+        console.log("API URL: ", API_TARGET);
         console.log(`Requesting: ${apiURL}`);
 
         return fetch(apiURL, {
