@@ -20,13 +20,11 @@ jobs:
       - name: Install dependencies
         working-directory: ./client
         run: |
-          cd client
           npm ci   # uses the client/package-lock.json
 
       - name: Build
         working-directory: ./client
         run: |
-          cd client
           npm install
           npm run build
 
