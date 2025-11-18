@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  REACT_APP_API_URL: ${{ vars.REACT_APP_API_URL }}
+  REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
 permissions:
   contents: read
@@ -36,8 +36,9 @@ jobs:
       
       - name: Log Env Variable
         working-directory: ./client
-        run: echo "REACT_APP_API_URL=$REACT_APP_API_URL"
-             echo "REACT_APP_API_URL=${{vars.REACT_APP_API_URL}}"
+        run: |
+          echo "REACT_APP_API_URL=$REACT_APP_API_URL"
+          echo "REACT_APP_API_URL=${{vars.REACT_APP_API_URL}}"
       
       - name: Build
         working-directory: ./client
