@@ -87,7 +87,10 @@ export default function SearchPersonPage({pageType = "page", onSelect}) {
                     console.log(jsonData.data);
                     setSearchResults(jsonData.data);
                 }
-            });
+            })
+            .catch(error => {
+                console.log("failed to make api call");
+            })
     }, []);
 
     return <SearchPersonPresentation searchResults={searchResults} 

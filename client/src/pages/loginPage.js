@@ -43,6 +43,9 @@ export default function LoginPage() {
         .then(response => {
             setUser(null);
         })
+        .catch(error => {
+            console.log("failed to make api call");
+        })
     }
 
     return (

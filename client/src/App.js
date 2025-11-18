@@ -25,6 +25,7 @@ function App() {
       <PageLayout>
         <Routes>
           <Route path="/" element={<HomePage />}/>
+          <Route path="/ancestry-app" element={<HomePage />}/>
           <Route path="/search" element={<SearchPersonPage />}/>
           <Route path="/people/:id" element={<ViewPersonPage />}/>
           <Route path="/create" element={<CreatePersonPage />}/>

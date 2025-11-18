@@ -26,7 +26,12 @@ export function AuthenticationProvider({ children }) {
             console.log(jsonData);
             setUser(jsonData);
             setLoading(false);
-        });
+        })
+        .catch(error => {
+            console.log("failed to initialize authentication");
+            setUser(null);
+            setLoading(false);
+        })
     }, []);
 
     return (

@@ -32,6 +32,9 @@ export default function RegisterPage() {
             console.log(jsonData);
             setUser(jsonData);
         })
+        .catch(error => {
+            console.log("Failed to make api call");
+        })
     }
 
     return (

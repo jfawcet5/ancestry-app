@@ -56,6 +56,9 @@ export default function CreatePersonPage({pageType="page", onSelect}) {
               });
             }
           })
+          .catch(error => {
+            console.log("failed to make api call");
+          })
 
         console.log("Submit");
       };

@@ -32,7 +32,7 @@ export default function SearchPersonPresentation({searchResults,
 
     return (
         <>
-            <div classname={styles.searchPageContainer}>
+            <div className={styles.searchPageContainer}>
                 <h1>Search</h1>
 
                 <form className={styles.searchFilterContainer}>
