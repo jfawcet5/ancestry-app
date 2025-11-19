@@ -33,11 +33,11 @@ authenticationRouter.get("/me", auth, (req, res) => {
 });
 
 authenticationRouter.post("/logout", (req, res) => {
-    logger.debug("Enter AuthenticationRouter.get", "/me");
+    logger.debug("Enter AuthenticationRouter.logout");
     res.cookie("token", "", {
         httpOnly: true,
         expires: new Date(0),
-        sameSite: "lax"
+        sameSite: "none"
     });
     res.json({message: "Logged Out"});
 });
