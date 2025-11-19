@@ -24,7 +24,7 @@ export function useApi() {
                 ...options.headers
             }
         });
-    }, [user?.token]);
+    }, [user]);
 
     return apiCall;
 }
