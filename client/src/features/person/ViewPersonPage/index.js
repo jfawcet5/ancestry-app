@@ -10,7 +10,7 @@ import { computePersonDiff } from '../../../shared/utilities/computeDiff.js';
 
 import { useApi } from '../../../shared/utilities/apiCall.js';
 
-const ENDPOINT = process.env.REACT_APP_API_URL;
+//const ENDPOINT = process.env.REACT_APP_API_URL;
 
 function ViewPersonPage() {
     const { id } = useParams();
