@@ -19,7 +19,7 @@ import RegisterPage from './pages/registerPage.js';
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Navbar />
       <PageLayout>
         <Routes>
