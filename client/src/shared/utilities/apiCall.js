@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { useAuthentication } from "../../features/security/authContext";
 
 const API_TARGET = process.env.REACT_APP_API_URL;
@@ -7,7 +9,7 @@ export function useApi() {
     const { user } = useAuthentication();
     console.log(user);
 
-    function apiCall(endpoint, options = {}) {
+    const apiCall = useCallback((endpoint, options = {}) => {
         const apiBase = user ? "/api" : "/api/demo";
         const apiURL = `${API_TARGET}${apiBase}${endpoint}`
 
@@ -22,7 +24,7 @@ export function useApi() {
                 ...options.headers
             }
         });
-    }
+    }, [user?.token]);
 
     return apiCall;
 }
