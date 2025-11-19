@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 })
 
 app.use(cors({
-	origin: ["https://jfawcet5.github.io", "http://localhost:3000"],
+	origin: config.CLIENT_URL,
 	credentials: true,
 	methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 	allowedHeaders: ["Content-Type", "Authorization"],

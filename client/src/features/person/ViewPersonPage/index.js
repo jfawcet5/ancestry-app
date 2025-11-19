@@ -77,7 +77,8 @@ function ViewPersonPage() {
                 body: JSON.stringify(changes)
             };
 
-            fetch(`${ENDPOINT}/api/people/${id}`, config)
+            //fetch(`${ENDPOINT}/api/people/${id}`, config)
+            apiCall(`/people/${id}`, config)
                 .then(response => {
                     console.log("Save changes");
                     setPersonData(formData);

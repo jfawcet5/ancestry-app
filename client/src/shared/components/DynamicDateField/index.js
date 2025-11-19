@@ -26,8 +26,8 @@ export default function DynamicDateField({value = "",
                                             onChange
 }) {
     const [year, month, day] = value.split("/");
-    console.error("logging date");
-    console.log(year, month, day);
+    //console.error("logging date");
+    //console.log(year, month, day);
 
     const [dateFields, setDateFields] = useState({day: day, month: month, year: year});
     

@@ -14,16 +14,16 @@ export default function CreatePersonPage({pageType="page", onSelect}) {
     const apiCall = useApi();
 
     const handleChange = (e) => {
-        console.log('presentation handle change');
+        //console.log('presentation handle change');
         const { name, value } = e.target;
-        console.log(e.target.name);
-        console.log(e.target.value);
-        console.log(e.target);
+        //console.log(e.target.name);
+        //console.log(e.target.value);
+        //console.log(e.target);
         setFormData(prev => ({
           ...prev,
           [name]: value
         }));
-        console.log(formData);
+        //console.log(formData);
       };
 
       const handleSubmit = async (e) => {
@@ -65,7 +65,7 @@ export default function CreatePersonPage({pageType="page", onSelect}) {
 
     return (
         <>
-            <CreatePersonPresentation onChange={handleChange} onSubmit={handleSubmit}/>
+            <CreatePersonPresentation onChange={handleChange} onSubmit={handleSubmit} pageType={pageType}/>
         </>
     )
 }

@@ -1,5 +1,5 @@
 //import React, {useEffect, useState} from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 //import logo from './logo.svg';
 import './App.css';
 
@@ -19,7 +19,7 @@ import RegisterPage from './pages/registerPage.js';
 
 function App() {
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <Navbar />
       <PageLayout>
         <Routes>
