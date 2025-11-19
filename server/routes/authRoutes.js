@@ -36,6 +36,7 @@ authenticationRouter.post("/logout", (req, res) => {
     logger.debug("Enter AuthenticationRouter.logout");
     res.cookie("token", "", {
         httpOnly: true,
+        secure: true,
         expires: new Date(0),
         sameSite: "none"
     });
