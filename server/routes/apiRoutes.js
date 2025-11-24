@@ -9,6 +9,7 @@ import peopleRouter from "./peopleRoutes.js"
 import relationRouter from "./relationRoutes.js";
 import treeRouter from "./treeRoutes.js";
 import authenticationRouter from "./authRoutes.js";
+import demoRouter from "./demoRoutes.js";
 import {auth} from "../middleware/auth.js"
 
 
@@ -20,10 +21,7 @@ apiRouter.get("/hello", (req, res) => {
 	}, 5000);
 });
 
-apiRouter.get("/marriages/", (req, res) => {
-	res.send("<h1>marriages</h1>");
-});
-
+apiRouter.use("/demo", demoRouter);
 apiRouter.use("/auth", authenticationRouter);
 apiRouter.use("/people/", auth, peopleRouter);
 apiRouter.use("/relations/", relationRouter);

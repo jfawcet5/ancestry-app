@@ -1,4 +1,4 @@
-import db from "./db.js";
+import db from "./liveDb.js";
 //const { generateOutputPayload, parseInputJson } = require("../utils/transformer.js");
 import { generateOutputPayload, parseInputJson } from "../utils/transformer.js";
 import logger from "../utils/logger.js";
