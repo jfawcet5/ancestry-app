@@ -13,21 +13,23 @@ export default function SearchPersonPresentation({searchResults,
                                                   onSubmit,
                                                   pageType,
                                                   onSelect}) {
-    let resultsList = null;
+    let resultsList = "No data to display";
 
-    if (pageType === "modal") {
-        resultsList = searchResults.map(person => (
-            <li key={person.id}>
-                <button onClick={(e) => onSelect(e, person)}>{`${person.name}`}</button>
-            </li>
-        ));
-    }
-    else {
-        resultsList = searchResults.map(person => (
-            <li key={person.id}>
-                <Link to={`/people/${person.id}`}>{`${person.name.first} ${person.name.last}`}</Link>
-            </li>
-        ));
+    if (searchResults && searchResults.length > 0) {
+        if (pageType === "modal") {
+            resultsList = searchResults.map(person => (
+                <li key={person.id}>
+                    <button onClick={(e) => onSelect(e, person)}>{`${person.name}`}</button>
+                </li>
+            ));
+        }
+        else {
+            resultsList = searchResults.map(person => (
+                <li key={person.id}>
+                    <Link to={`/people/${person.id}`}>{`${person.name.first} ${person.name.last}`}</Link>
+                </li>
+            ));
+        }
     }
 
     return (

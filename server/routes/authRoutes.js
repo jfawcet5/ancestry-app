@@ -1,7 +1,3 @@
-//const express = require("express");
-//const authenticationRouter = express.Router();
-//const authenticationController = require("../controllers/authController.js");
-//const authenticationModel = require("../models/authModel.js");
 import express from "express";
 const authenticationRouter = express.Router();
 
@@ -14,18 +10,6 @@ import logger from "../utils/logger.js";
 function inject(handler, dependency) {
     return handler(dependency);
 }
-
-// GET /api/people
-//peopleRouter.get("/", inject(peopleController.getPeopleList, peopleModel));
-
-// GET /api/people/:id
-//peopleRouter.get("/:id", inject(peopleController.getPersonById, peopleModel));
-
-// PATCH /api/people/:id
-//peopleRouter.patch("/:id", inject(peopleController.updatePersonById, peopleModel));
-
-// POST /api/people/
-//peopleRouter.post("/", inject(peopleController.createNewPerson, peopleModel));
 
 authenticationRouter.get("/me", auth, (req, res) => {
     logger.debug("Enter AuthenticationRouter.get", "/me");

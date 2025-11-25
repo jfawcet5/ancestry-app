@@ -15,12 +15,15 @@ import ViewTreePage from './features/tree/ViewTreePage/index.js';
 import LoginPage from './pages/loginPage.js';
 import RegisterPage from './pages/registerPage.js';
 
+import background from "./assets/background2.png";
+
 //const ENDPOINT = process.env.REACT_APP_API_URL;
 
 function App() {
   return (
     <Router>
       <Navbar />
+      <img src={background} className='background' alt="logo"/>
       <PageLayout>
         <Routes>
           <Route path="/" element={<HomePage />}/>

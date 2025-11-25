@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styles from "./DynamicDateField.module.css";
 
@@ -25,11 +25,15 @@ export default function DynamicDateField({value = "",
                                             children,
                                             onChange
 }) {
-    const [year, month, day] = value.split("/");
-    //console.error("logging date");
-    //console.log(year, month, day);
+    const [dateFields, setDateFields] = useState({day: "", month: "", year: ""});
+    
+    useEffect(() => {
+        console.log("new date value", value);
+        const [year = "", month = "", day = ""] = value.split("/");
+        setDateFields({day, month, year});
+    }, [value]);
 
-    const [dateFields, setDateFields] = useState({day: day, month: month, year: year});
+    const {year, month, day } = dateFields;
     
     const handleChange = (e, pattern, targetField) => {
         const val = e.target.value;
@@ -43,8 +47,6 @@ export default function DynamicDateField({value = "",
             onChange?.(e);
         }
     }
-
-
 
     if (readonly) {
         if (year === "" && month === "" && day === "") {

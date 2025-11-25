@@ -47,7 +47,7 @@
 }
 
 .page-container {
-  margin: 1rem;
+  margin: 0;
 }
 
 /* Desktops */
@@ -58,5 +58,19 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin: 0;
+    padding: 0;
   }
+}
+
+
+.background {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  display: inline;
+  position: absolute;
+  z-index: -1;
+  display: none;
 }

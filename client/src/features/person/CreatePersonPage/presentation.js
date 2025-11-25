@@ -5,7 +5,11 @@ import DynamicDateField from "../../../shared/components/DynamicDateField";
 
 import styles from "./createPerson.module.css";
 
-export default function CreatePersonPresentation({onChange, onSubmit, pageType}) {
+export default function CreatePersonPresentation({onChange, 
+                                                  onSubmit, 
+                                                  pageType, 
+                                                  formData,
+                                                  resultMessage}) {
     let content = (
         <>
             <h1>Create Person</h1>
@@ -13,15 +17,15 @@ export default function CreatePersonPresentation({onChange, onSubmit, pageType})
             <div className={styles.fieldContainer}>
                 <div className={styles.inputField}>
                     <label>First Name</label>
-                    <input type="text" name="firstName" onChange={onChange} required></input>
+                    <input type="text" name="firstName" value={formData.firstName} onChange={onChange} required></input>
                 </div>
                 <div className={styles.inputField}>
                     <label>Middle Name</label>
-                    <input type="text" name="middleName" onChange={onChange}></input>
+                    <input type="text" name="middleName" value={formData.middleName} onChange={onChange}></input>
                 </div>
                 <div className={styles.inputField}>
                     <label>Last Name</label>
-                    <input type="text" name="lastName" onChange={onChange} required></input>
+                    <input type="text" name="lastName" value={formData.lastName} onChange={onChange} required></input>
                 </div>
             </div>
 
@@ -29,12 +33,14 @@ export default function CreatePersonPresentation({onChange, onSubmit, pageType})
                 <div className={styles.inputField}>
                     <label>Birth Date</label>
                     <DynamicDateField name="birthDate"
+                                value={formData.birthDate}
                                 onChange={onChange}
                     />
                 </div>
                 <div className={styles.inputField}>
                     <label>Death Date</label>
                     <DynamicDateField name="deathDate"
+                                value={formData.deathDate}
                                 onChange={onChange}
                     />
                 </div>
@@ -43,7 +49,7 @@ export default function CreatePersonPresentation({onChange, onSubmit, pageType})
             <div className={styles.fieldContainer}>
                 <div className={styles.inputField}>
                     <label>Gender</label>
-                    <select name="gender" onChange={onChange}>
+                    <select name="gender" value={formData.gender} onChange={onChange}>
                         <option value="">--Select--</option>
                         <option value="male">male</option>
                         <option value="female">female</option>
@@ -65,6 +71,11 @@ export default function CreatePersonPresentation({onChange, onSubmit, pageType})
                 <div className={styles.container}>
                     {content}
                     <button onClick={onSubmit}>Create</button>
+                </div>
+            }
+            {resultMessage && 
+                <div>
+                    {resultMessage}
                 </div>
             }
         </>

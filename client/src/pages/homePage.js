@@ -1,5 +1,6 @@
 //import React, { useState } from 'react';
 import logo from '../assets/test1.svg';
+//import background from "../assets/background.png";
 
 function HomePage() {
     return (

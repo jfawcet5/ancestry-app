@@ -11,28 +11,27 @@ export const restrictInsertByDbSize = (db) => (req, res, next) => {
     }
 
     const maxRows = config.MAX_DEMO_ROWS;
-    logger.debug(`Max DB count: ${maxRows}`);
 
-    try {
-        db.query("SELECT COUNT(*) AS count FROM a_person")
-        .then(result => {
-            const count = result.rows[0].count;
-            logger.debug(`Current DB count: ${count}`);
+    db.query("SELECT COUNT(*) AS count FROM a_person")
+    .then(result => {
+        const count = Number(result.rows[0].count);
+        logger.debug(`Current DB count: ${count}`);
+        logger.debug(`Max DB count: ${maxRows}`);
 
-            if (count >= maxRows) {
-                logger.error("Demo capacity reached. Blocking request");
-                return res.status(403).json({
-                    error: "Demo capacity reached. Please try again later"
-                });
-            }
+        if (count >= maxRows) {
+            logger.error("Demo capacity reached. Blocking request");
+            return res.status(403).json({
+                error: "Demo capacity reached. Please try again later"
+            });
+        }
 
-            next();
-        })
-    }
-    catch (err) {
+        logger.debug("Demo capacity not reached. Allowing request");
+        next();
+    })
+    .catch(err => {
         logger.error("Error checking DB row size", err.message);
         res.status(500);
-    }
+    });
 }
 
 export default {

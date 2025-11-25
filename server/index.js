@@ -10,8 +10,6 @@ import config from "./config/env.js";
 //const apiRouter = require("./routes/apiRoutes.js");
 import apiRouter from "./routes/apiRoutes.js";
 
-const allowedOrigins = ["https://jfawcet5.github.io/ancestry-app/", "https://jfawcet5.github.io/", "https://jfawcet5.github.io", "http://localhost:3000"]
-
 const app = express();
 
 app.use((req, res, next) => {

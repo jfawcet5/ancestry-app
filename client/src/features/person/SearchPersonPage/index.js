@@ -63,37 +63,6 @@ export default function SearchPersonPage({pageType = "page", onSelect}) {
             })
     }
 
-    useEffect(() => {
-        if (pageType === "modal") return;
-
-        //fetch(`${ENDPOINT}/api/people/`)
-        apiCall(`/people/`)
-            .then(response => {
-                console.log(response);
-                return response.json();
-            })
-            .then(jsonData => {
-                console.log("Successfully retrieved search results:");
-                console.log(jsonData);
-                if (pageType === "modal") {
-                    setSearchResults(jsonData.data.map((item) => ({
-                        id: item.id,
-                        name: `${item.name.first} ${item.name.last}`
-                    })));
-                    console.log(searchResults);
-                }
-                else {
-                    console.log("set results with transformed data. input: ");
-                    console.log(jsonData.data);
-                    setSearchResults(jsonData.data);
-                }
-            })
-            .catch(error => {
-                console.log("failed to make api call");
-            })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return <SearchPersonPresentation searchResults={searchResults} 
                                      searchFilters={searchFilters}
                                      onChange={handleChange}
