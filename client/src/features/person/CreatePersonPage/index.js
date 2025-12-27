@@ -31,11 +31,7 @@ export default function CreatePersonPage({pageType="page", onSelect}) {
     }, [resultMessage]);
 
     const handleChange = (e) => {
-      //console.log('presentation handle change');
       const { name, value } = e.target;
-      //console.log(e.target.name);
-      //console.log(e.target.value);
-      //console.log(e.target);
       setFormData(prev => ({
         ...prev,
       [name]: value

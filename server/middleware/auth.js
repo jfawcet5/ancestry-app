@@ -4,20 +4,19 @@ import config from "../config/env.js";
 //const { logger } = require("../utils/logger.js");
 import logger from "../utils/logger.js";
 
+
 export function auth(req, res, next) {
     logger.debug("Enter auth.auth");
-    console.log(req.cookies);
 
-    logger.debug("Validating cookies");
+    const authHeader = req.headers["authorization"];
+    console.log(req.headers);
 
-    if (!req.cookies) {
-        logger.error("No cookies set. User not authenticated");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        logger.error("User not authenticated. No Authorization header set");
         return res.sendStatus(401);
     }
 
-    logger.debug("Validating tokens");
-    
-    const token = req.cookies.token;
+    const token = authHeader.split(" ")[1];
 
     if (!token) {
         logger.error("No token set. User not authenticated");

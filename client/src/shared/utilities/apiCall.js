@@ -6,7 +6,7 @@ const API_TARGET = process.env.REACT_APP_API_URL;
 
 export function useApi() {
     console.log("Use API Setup");
-    const { user } = useAuthentication();
+    const { user, token } = useAuthentication();
     console.log(user);
 
     const apiCall = useCallback((endpoint, options = {}) => {
@@ -21,10 +21,11 @@ export function useApi() {
             credentials: "include",
             headers: {
                 "Content-Type": "applicatin/json",
+                "Authorization": `Bearer ${token}`,
                 ...options.headers
             }
         });
-    }, [user]);
+    }, [user, token]);
 
     return apiCall;
 }

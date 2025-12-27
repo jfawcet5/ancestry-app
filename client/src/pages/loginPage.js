@@ -1,39 +1,58 @@
-import { useState } from "react";
 import { useAuthentication } from "../features/security/authContext";
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
+function GenerateCodeVerifier() {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+
+    return btoa(String.fromCharCode(...array))
+        .replace(/\+/g, "-")
+        .replace(/\//g, "-")
+        .replace(/=+$/, "");
+}
+
+function LoginButton() {
+    const codeVerifier = GenerateCodeVerifier();
+    sessionStorage.setItem("pkce_verifier", codeVerifier);
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(codeVerifier);
+    const hash = crypto.subtle.digest("SHA-256", data);
+    hash.then(h => {
+        const codeChallenge = btoa(String.fromCharCode(...new Uint8Array(h)))
+            .replace(/\+/g, "-")
+            .replace(/\//g, "-")
+            .replace(/=+$/, "");
+        
+        const state = btoa(JSON.stringify({
+            flow: "login",
+            redirect: "/"
+        }));
+
+        const params = new URLSearchParams({
+            response_type: "code",
+            client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
+            redirect_uri: window.location.origin + "/",
+            scope: "openid profile email",
+            screen_hint: "login",
+            code_challenge: codeChallenge,
+            code_challenge_method: "S256",
+            state
+        });
+
+        sessionStorage.setItem("authFlow", JSON.stringify({
+            type: "login"
+        }));
+
+        window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/authorize?${params}`;
+    })
+}
+
+
+
 export default function LoginPage() {
     const { setUser } = useAuthentication();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const handleLogin = (e) => {
-        e.preventDefault();
-
-        fetch(`${ENDPOINT}/api/auth/login`, {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({email, password})
-        })
-        .then(response => {
-            console.log("requesting me")
-            return fetch(`${ENDPOINT}/api/auth/me`, {credentials: "include"})
-        })
-        .then(response => {
-            console.log("recieved a response for me");
-            return response.json();
-        })
-        .then(auth => {
-            console.log("auth");
-            console.log(auth);
-            setUser(auth);
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
 
     const handleLogout = (e) => {
         fetch(`${ENDPOINT}/api/auth/logout`, {
@@ -50,13 +69,12 @@ export default function LoginPage() {
 
     return (
         <div>
-            <form onSubmit={handleLogin}>
-                <label>email</label>
-                <input value={email} onChange={e => setEmail(e.target.value)} />
-                <label>password</label>
-                <input value={password} type="password" onChange={e => setPassword(e.target.value)} />
-                <button>Login</button>
+            <form>
+                <br />
+                <button onClick={LoginButton}>Login</button>
+                <p>Note: You will be taken to a secure login page</p>
             </form>
+            <br /><br />
             <button onClick={handleLogout}>Logout</button>
         </div>
 

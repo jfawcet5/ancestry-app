@@ -3,11 +3,14 @@
 //const bcrypt = require("bcryptjs");
 import {formatResponse, sendResponse } from "../utils/response.js";
 import bcrypt from "bcryptjs";
+import config from "../config/env.js";
 
 //const { createToken } = require("../utils/authService.js");
 //const { logger } = require("../utils/logger.js");
 import {createToken} from "../utils/authService.js";
 import logger from "../utils/logger.js";
+import { json } from "express";
+//import { sign } from "jsonwebtoken";
 
 function saveJsonPayload(bodyJSON, logFileName, logMessage="Saved file:") {
     const fileName = logger.saveToFile(logFileName, bodyJSON, "json");
@@ -87,8 +90,150 @@ const getApplicationUser = (dataModel) => (req, res, next) => {
     })
 }
 
+const handleOAuthTokenExchange = (dataModel) => (req, res, next) => {
+    logger.debug("Enter AuthenticationController.handleOAuthTokenExchange");
+    logger.debug(JSON.stringify(req.body));
+    const {code, codeVerifier, flow} = req.body;
+
+    // Request body for Auth0 API call
+    const reqBody = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            grant_type: "authorization_code",
+            client_id: config.AUTH0_CLIENT_ID,
+            code,
+            redirect_uri: config.AUTH0_REDIRECT,
+            code_verifier: codeVerifier
+        })
+    };
+
+    // PKCE token exchange
+    fetch(`https://${config.AUTH0_DOMAIN}/oauth/token`, reqBody)
+    .then(res => res.json()).then(tokenData => {
+        logger.debug("OAuth raw token data", JSON.stringify(tokenData));
+
+        const idToken = JSON.parse(
+            Buffer.from(tokenData.id_token.split(".")[1], "base64")
+        );
+
+        logger.debug("OAuth token", JSON.stringify(idToken));
+
+        const oauthUserId = idToken.sub;
+
+        const flowType = typeof flow === "string" ? JSON.parse(flow).type : flow.type;
+
+        logger.debug("Flow", flow);
+        logger.debug("Flow type", flowType);
+        logger.debug("Flow constructor", flow.constructor.name);
+        logger.debug("Flow instanceof URLSearchParams", flow instanceof URLSearchParams);
+
+        // During signup flow, create the new user in the DB and associate with the OAuth User ID
+        if (flowType === "signup") {
+            logger.debug("signup flow. Create user");
+
+            const sessionId = typeof flow === "string" ? JSON.parse(flow).sessionId : flow.sessionId;
+
+            // Get the invite code associated with the signup session
+            dataModel.getInviteFromSession(sessionId)
+            .then(invite => {
+                const inviteCode = invite.code;
+                logger.debug("invite code from session", inviteCode);
+
+                // Create the new user with the invite code and OAuth user ID
+                return dataModel.createUserFromInvite(oauthUserId, inviteCode)
+                        .then(user => ({ invite, user }));
+            })
+            .then(({invite, user}) => {
+                logger.debug("created user", user.id);
+                logger.debug("invite", JSON.stringify(invite));
+
+                // Format response
+                const userData = {
+                    id: user.id,
+                    role: invite.role
+                }
+
+                logger.debug("create token input: id/role", JSON.stringify(userData));
+
+                const token = createToken(userData);
+                logger.debug("token", JSON.stringify(token));
+
+                // Send new user info to frontend
+                res.json({
+                    token: token
+                });
+            })
+            .catch(error => {
+                logger.error("Failed to create new user", error.message);
+            });
+            return;
+        }
+
+        // During login flow, retrieve user info from DB using the OAuth User ID
+        else {
+            logger.debug("login flow. Retrieve user");
+            dataModel.getApplicationUser(oauthUserId)
+            .then(userData => {
+                logger.debug("retrieved user", JSON.stringify(userData));
+                const token = createToken(userData);
+                logger.debug("token", JSON.stringify(token));
+                res.json({
+                    token: token
+                });
+            })
+            .catch(error => {
+                logger.error("Failed to create new user", error.message);
+            });
+            return;
+        }
+
+        res.json({
+            token: {
+                oauthUserId
+            }
+        });
+    })
+    .catch(error => {
+        logger.error("OAuth Token Exchange Failed", error.message);
+
+        const errorResponse = {
+            code: "FAILED",
+            message: error.message
+        };
+
+        const response = formatResponse(false, "Operation Failed", null, errorResponse);
+
+        //saveJsonPayload(response, "createNewPerson_output");
+        sendResponse(res, 500, response);
+        logger.debug("Exit AuthenticationController.getApplicationUser");
+    })
+}
+
+
+
+
+const preRegisterUser = (dataModel) => (req, res, next) => {
+    logger.debug("Enter AuthenticationController.preRegisterUser");
+    logger.debug(JSON.stringify(req.body));
+    const {invite} = req.body;
+    logger.debug("invite:", invite);
+
+    // create signup session id
+    const signupSessionId = crypto.randomUUID();
+
+    // Persist the signup session ID and invite code in DB.
+    dataModel.saveSignupSession(signupSessionId, invite);
+
+    // Return session ID to the frontend
+
+    res.json({ signupSessionId });
+}
+
 
 export default {
     createNewApplicationUser,
-    getApplicationUser
+    getApplicationUser,
+    handleOAuthTokenExchange,
+    preRegisterUser
 }

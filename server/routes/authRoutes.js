@@ -16,6 +16,10 @@ authenticationRouter.get("/me", auth, (req, res) => {
     res.json(req.user);
 });
 
+ 
+authenticationRouter.post("/exchange", inject(authController.handleOAuthTokenExchange, authenticationModel));
+
+
 authenticationRouter.post("/logout", (req, res) => {
     logger.debug("Enter AuthenticationRouter.logout");
     res.cookie("token", "", {
@@ -30,6 +34,8 @@ authenticationRouter.post("/logout", (req, res) => {
 authenticationRouter.post("/login", inject(authController.getApplicationUser, authenticationModel));
 
 authenticationRouter.post("/register", inject(authController.createNewApplicationUser, authenticationModel));
+
+authenticationRouter.post("/preregister", inject(authController.preRegisterUser, authenticationModel));
 
 
 export default authenticationRouter;
