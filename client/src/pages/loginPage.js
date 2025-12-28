@@ -33,7 +33,7 @@ function LoginButton() {
         const params = new URLSearchParams({
             response_type: "code",
             client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
-            redirect_uri: window.location.origin + "/",
+            redirect_uri: window.location.origin + process.env.PUBLIC_URL,
             scope: "openid profile email",
             screen_hint: "login",
             code_challenge: codeChallenge,
