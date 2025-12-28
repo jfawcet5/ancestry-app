@@ -108,6 +108,8 @@ const handleOAuthTokenExchange = (dataModel) => (req, res, next) => {
         })
     };
 
+    logger.debug("Token exchange payload", JSON.stringify(reqBody));
+
     // PKCE token exchange
     fetch(`https://${config.AUTH0_DOMAIN}/oauth/token`, reqBody)
     .then(res => res.json()).then(tokenData => {

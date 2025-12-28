@@ -3,7 +3,7 @@ import { useAuthentication } from "../features/security/authContext";
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
 function GenerateCodeVerifier() {
-    const array = new Uint8Array(32);
+    const array = new Uint8Array(56);
     crypto.getRandomValues(array);
 
     return btoa(String.fromCharCode(...array))
@@ -18,7 +18,7 @@ function LoginButton() {
 
     const encoder = new TextEncoder();
     const data = encoder.encode(codeVerifier);
-    const hash = crypto.subtle.digest("SHA-256", data);
+    const hash = window.crypto.subtle.digest("SHA-256", data);
     hash.then(h => {
         const codeChallenge = btoa(String.fromCharCode(...new Uint8Array(h)))
             .replace(/\+/g, "-")
@@ -33,7 +33,7 @@ function LoginButton() {
         const params = new URLSearchParams({
             response_type: "code",
             client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
-            redirect_uri: window.location.origin + process.env.PUBLIC_URL,
+            redirect_uri: window.location.origin + process.env.REACT_APP_PUBLIC_URL,
             scope: "openid profile email",
             screen_hint: "login",
             code_challenge: codeChallenge,
@@ -45,10 +45,26 @@ function LoginButton() {
             type: "login"
         }));
 
+        console.log("Before Redirect");
+        console.log("verifier: ", codeVerifier);
+        console.log("redirect: ", window.location.origin + process.env.REACT_APP_PUBLIC_URL);
+        console.log("client id: ", process.env.REACT_APP_AUTH0_CLIENT_ID);
+
         window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/authorize?${params}`;
     })
 }
 
+
+function LogoutButton() {
+    const params = new URLSearchParams({
+        client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
+        returnTo: window.location.origin + process.env.REACT_APP_PUBLIC_URL,
+    });
+
+    console.log("returnTo", window.location.origin + process.env.REACT_APP_PUBLIC_URL);
+
+    window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/oidc/logout?${params}`;
+}
 
 
 export default function LoginPage() {
@@ -75,7 +91,7 @@ export default function LoginPage() {
                 <p>Note: You will be taken to a secure login page</p>
             </form>
             <br /><br />
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={LogoutButton}>Logout</button>
         </div>
 
     );

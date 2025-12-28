@@ -20,7 +20,7 @@ export function useApi() {
             ...options,
             credentials: "include",
             headers: {
-                "Content-Type": "applicatin/json",
+                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
                 ...options.headers
             }

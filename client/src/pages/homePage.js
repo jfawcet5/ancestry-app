@@ -11,19 +11,26 @@ function HomePage() {
     console.log("Open homepage");
     const { setUser, setToken } = useAuthentication();
 
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
     useEffect(() => {
         console.log("Home page");
         console.warn("----------");
-        const params = new URLSearchParams(window.location.search);
-        const code = params.get("code");
+        if (!code) {
+            return;
+        }
         //const state = params.get("state");
     
         if (!code) {
             console.log("No code provided");
             return;
         }
+        console.log("Read code: ", code);
     
         const verifier = sessionStorage.getItem("pkce_verifier");
+        sessionStorage.removeItem("pkce_verifier");
+        console.log("Read verifier: ", verifier);
     
         if (!verifier) {
             console.log("No verifier");
@@ -65,7 +72,7 @@ function HomePage() {
             sessionStorage.removeItem("authFlow");
             window.history.replaceState({}, "", "/");
         })
-    }, [setUser, setToken]);
+    }, [setUser, setToken, code]);
 
     return (
         <div>

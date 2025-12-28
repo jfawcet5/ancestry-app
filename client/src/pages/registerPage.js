@@ -3,7 +3,7 @@ import { useState } from "react";
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
 function GenerateCodeVerifier() {
-    const array = new Uint8Array(32);
+    const array = new Uint8Array(56);
     crypto.getRandomValues(array);
 
     return btoa(String.fromCharCode(...array))
@@ -46,7 +46,7 @@ export default function RegisterPage() {
             const params = new URLSearchParams({
                 response_type: "code",
                 client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
-                redirect_uri: window.location.origin + process.env.PUBLIC_URL,
+                redirect_uri: window.location.origin + process.env.REACT_APP_PUBLIC_URL,
                 scope: "openid profile email",
                 screen_hint: "signup",
                 code_challenge: codeChallenge,
