@@ -1,6 +1,6 @@
 import { useAuthentication } from "../features/security/authContext";
 
-const ENDPOINT = process.env.REACT_APP_API_URL;
+//const ENDPOINT = process.env.REACT_APP_API_URL;
 
 function GenerateCodeVerifier() {
     const array = new Uint8Array(56);
@@ -63,13 +63,20 @@ function LogoutButton() {
 
     console.log("returnTo", window.location.origin + process.env.REACT_APP_PUBLIC_URL);
 
-    window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/oidc/logout?${params}`;
+    window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/v2/logout?${params}`;
 }
 
 
 export default function LoginPage() {
+    //const { setUser } = useAuthentication();
     const { setUser } = useAuthentication();
 
+    const handleLogout = (e) => {
+        setUser(null);
+        LogoutButton();
+    }
+
+    /*
     const handleLogout = (e) => {
         fetch(`${ENDPOINT}/api/auth/logout`, {
             method: "POST",
@@ -82,6 +89,7 @@ export default function LoginPage() {
             console.log("failed to make api call");
         })
     }
+    */
 
     return (
         <div>
@@ -91,7 +99,7 @@ export default function LoginPage() {
                 <p>Note: You will be taken to a secure login page</p>
             </form>
             <br /><br />
-            <button onClick={LogoutButton}>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
         </div>
 
     );
