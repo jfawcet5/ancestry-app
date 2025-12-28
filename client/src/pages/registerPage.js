@@ -71,14 +71,14 @@ export default function RegisterPage() {
                     type: "signup",
                     sessionId: signupSessionId
                 }));
+
+                window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/authorize?${params}`;
             })
             .catch(error => {
                 console.log("Pre register failed");
                 console.log(error.message);
                 return;
             })
-
-            window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/authorize?${params}`;
         })
     }
 
