@@ -225,11 +225,26 @@ const preRegisterUser = (dataModel) => (req, res, next) => {
     const signupSessionId = crypto.randomUUID();
 
     // Persist the signup session ID and invite code in DB.
-    dataModel.saveSignupSession(signupSessionId, invite);
+    dataModel.saveSignupSession(signupSessionId, invite)
+    .then(result => {
+        logger.debug("Signup session persisted");
 
-    // Return session ID to the frontend
+        // Return session ID to the frontend
+        res.json({ signupSessionId });
+    })
+    .catch(error => {
+        logger.error("Failed to save signup session", error.message);
 
-    res.json({ signupSessionId });
+        const errorResponse = {
+            code: "FAILED",
+            message: error.message
+        };
+
+        const response = formatResponse(false, "Operation Failed", null, errorResponse);
+
+        sendResponse(res, 500, response);
+        logger.debug("Exit AuthenticationController.preRegisterUser");
+    });
 }
 
 

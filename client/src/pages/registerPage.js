@@ -28,6 +28,7 @@ export default function RegisterPage() {
 
     const handleLogin = (e) => {
         e.preventDefault();
+        console.log("register new user");
 
         const verifierHash = GetVerifierHash();
 
@@ -54,6 +55,7 @@ export default function RegisterPage() {
                 state
             });
 
+            console.log("Send pre register call to backend");
             const req = fetch(`${ENDPOINT}/api/auth/preregister`, {
                 method: "POST",
                 credentials: "include",
@@ -69,6 +71,11 @@ export default function RegisterPage() {
                     type: "signup",
                     sessionId: signupSessionId
                 }));
+            })
+            .catch(error => {
+                console.log("Pre register failed");
+                console.log(error.message);
+                return;
             })
 
             window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/authorize?${params}`;
