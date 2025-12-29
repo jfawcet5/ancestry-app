@@ -8,6 +8,7 @@ import ViewPersonPresentation from './presentation.js';
 import { transformPersonData } from '../../../shared/utilities/transform.js';
 import { computePersonDiff } from '../../../shared/utilities/computeDiff.js';
 
+import { usePermissions } from '../../security/usePermissions.js';
 import { useApi } from '../../../shared/utilities/apiCall.js';
 
 //const ENDPOINT = process.env.REACT_APP_API_URL;
@@ -19,6 +20,7 @@ function ViewPersonPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
+    const permissions = usePermissions();
 
     const apiCall = useApi();
 
@@ -150,6 +152,7 @@ function ViewPersonPage() {
     return (
         <>
             <ViewPersonPresentation personData={formData}
+                                    permissions={permissions}
                                     isEditMode={isEditMode}
                                     setIsEditMode={setIsEditMode}
                                     handleSave={handleSave}

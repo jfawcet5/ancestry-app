@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styles from "./Navbar.module.css";
 
+import { useAuthentication } from '../../features/security/authContext';
+import { usePermissions } from '../../features/security/usePermissions';
 /*
 function GenerateCodeVerifier() {
     const array = new Uint8Array(32);
@@ -85,16 +87,19 @@ function RegisterButton() {
 
 
 const Navbar = () => {
+    const { user } = useAuthentication();
+    const permissions = usePermissions();
+
     return (
         <nav className={styles.navContainer}>
             <h1><Link to="/">App</Link></h1>
             <ul className={styles.navLinks}>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/search">Search</Link></li>
-                <li><Link to="/create">Create</Link></li>
+                {permissions.canCreate && <li><Link to="/create">Create</Link></li>}
                 <li><Link to="/treeview">Tree</Link></li>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/register">Register</Link></li>
+                <li><Link to="/login">{user ? "Logout" : "Login"}</Link></li>
+                {!user && <li><Link to="/register">Register</Link></li>}
             </ul>
         </nav>
     );

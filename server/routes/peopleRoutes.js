@@ -6,6 +6,7 @@ const peopleRouter = express.Router();
 import db from "../models/liveDb.js";
 import peopleController from "../controllers/peopleController.js";
 import { PeopleModel } from "../models/peopleModel.js";
+import { requirePermission } from "../utils/permissions.js";
 
 const dataModel = new PeopleModel(db);
 
@@ -20,9 +21,9 @@ peopleRouter.get("/", inject(peopleController.getPeopleList, dataModel));
 peopleRouter.get("/:id", inject(peopleController.getPersonById, dataModel));
 
 // PATCH /api/people/:id
-peopleRouter.patch("/:id", inject(peopleController.updatePersonById, dataModel));
+peopleRouter.patch("/:id", requirePermission("edit"), inject(peopleController.updatePersonById, dataModel));
 
 // POST /api/people/
-peopleRouter.post("/", inject(peopleController.createNewPerson, dataModel));
+peopleRouter.post("/", requirePermission("edit"), inject(peopleController.createNewPerson, dataModel));
 
 export default peopleRouter;

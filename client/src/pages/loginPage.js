@@ -69,7 +69,7 @@ function LogoutButton() {
 
 export default function LoginPage() {
     //const { setUser } = useAuthentication();
-    const { setUser } = useAuthentication();
+    const { user, setUser } = useAuthentication();
 
     const handleLogout = (e) => {
         setUser(null);
@@ -95,12 +95,14 @@ export default function LoginPage() {
         <div>
             <form>
                 <br />
-                <button onClick={LoginButton}>Login</button>
-                <p>Note: You will be taken to a secure login page</p>
+                {!user && (
+                    <>
+                        <button onClick={LoginButton}>Login</button>
+                        <p>Note: You will be taken to a secure login page</p>
+                    </>
+                )}
             </form>
-            <br /><br />
-            <button onClick={handleLogout}>Logout</button>
+            {user && <button onClick={handleLogout}>Logout</button>}
         </div>
-
     );
 }

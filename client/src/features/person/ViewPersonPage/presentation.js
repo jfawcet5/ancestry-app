@@ -4,6 +4,7 @@ import PersonHeader from "./personHeader.js";
 import RelationSection from './relationSection.js';
 
 export default function ViewPersonPresentation({personData,
+                                                permissions,
                                                 isEditMode, 
                                                 setIsEditMode, 
                                                 handleSave,
@@ -16,16 +17,18 @@ export default function ViewPersonPresentation({personData,
             <RelationSection relations={personData} isEditable={isEditMode} onChange={onRelationChange}/>
             <p>{JSON.stringify(personData)}</p>
 
-            <div className='edit-mode-button'>
-                {isEditMode ? (
-                                <>
-                                    <button onClick={onCancel}>Cancel</button>
-                                    <button onClick={handleSave}>Save</button>
-                                </>
-                              )
-                            : <button onClick={() => {setIsEditMode(true)}}>Edit</button>
-                }
-            </div>
+            {permissions.canEdit && (
+                <div className='edit-mode-button'>
+                    {isEditMode ? (
+                                    <>
+                                        <button onClick={onCancel}>Cancel</button>
+                                        <button onClick={handleSave}>Save</button>
+                                    </>
+                                )
+                                : <button onClick={() => {setIsEditMode(true)}}>Edit</button>
+                    }
+                </div>
+            )}
         </>
     );
 }
