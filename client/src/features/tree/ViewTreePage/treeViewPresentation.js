@@ -47,9 +47,11 @@ export default function TreeViewPresentation({personData,
                 }
                 <button onClick={() => {setControlPanelOpen(!controlPanelOpen)}}>---</button>
             </div>
-            <div style={{overflowX: "auto", width: "75%"}}>
+            <div style={{overflowX: "auto", width: "100%"}}>
             
-            <svg width={treeViewData.width} height="400" style={{ border: "1px solid #ccc" }}>
+            <svg width="100%" height="400" style={{ border: "1px solid #ccc" }}
+                 viewBox={`0 0 ${treeViewData.width} 400`}
+            >
                 {treeViewData.rects && treeViewData.rects.map((r, i) => (
                     <rect
                         key={i}

@@ -1,0 +1,29 @@
+:root {
+    /* Brand roles */
+    --color-primary: rgb(4, 45, 70);
+    --color-secondary: rgb(67, 191, 174);
+    --color-tertiary: blue;
+
+    /* Surface roles */
+    /* --background-color: rgb(152, 234, 245); */
+    --background-color: rgb(182, 244, 255);
+    --section-background-primary: rgb(122, 207, 222);
+    --section-background-secondary: rgb(62, 164, 182);
+    --surface-color: purple;
+    --navbar-color: rgb(4, 45, 70);
+
+    /* Text roles */
+    --text-dark-primary: rgb(4, 45, 70);
+    --text-dark-secondary: black;
+    /* --text-inverse: rgb(15, 195, 225); */
+    --text-light-primary: rgb(67, 191, 174);
+    --text-light-secondary: rgb(182, 244, 255);
+
+    /* State roles */
+    --success-color: green;
+    --warning-color: orange;
+    --danger-color: red;
+}
+
+
+/* 67, 191, 174 */

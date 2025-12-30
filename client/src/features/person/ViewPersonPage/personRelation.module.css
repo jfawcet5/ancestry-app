@@ -7,6 +7,7 @@
     height: 5rem;
     overflow-y: scroll;
     scrollbar-gutter: stable;
+    background-color: var(--section-background-primary);
 }
 
 /* Optional: style the scrollbar for better visibility */
@@ -36,7 +37,8 @@
 
 .relationList li {
     padding: 0 0.5rem 0 0.5rem;
-    background-color: lightgrey;
+    background-color: var(--section-background-secondary);
+    color: var(--text-dark-primary);
 }
 
 /*

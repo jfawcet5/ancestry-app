@@ -1,3 +1,8 @@
+html {
+  background-color: var(--background-color);
+  color: var(--text-dark-primary);
+}
+
 .App {
   text-align: center;
 }
@@ -37,7 +42,6 @@
   }
 }
 
-
 .edit-mode-button {
   position: fixed;
   right: 1rem;
@@ -47,7 +51,7 @@
 }
 
 .page-container {
-  margin: 0;
+  margin: 0.5rem 0 0 0;
 }
 
 /* Desktops */

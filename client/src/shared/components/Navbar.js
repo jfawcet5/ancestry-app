@@ -3,6 +3,8 @@ import styles from "./Navbar.module.css";
 
 import { useAuthentication } from '../../features/security/authContext';
 import { usePermissions } from '../../features/security/usePermissions';
+
+import logo from "../../assets/Logo.png";
 /*
 function GenerateCodeVerifier() {
     const array = new Uint8Array(32);
@@ -92,14 +94,16 @@ const Navbar = () => {
 
     return (
         <nav className={styles.navContainer}>
-            <h1><Link to="/">App</Link></h1>
+            <div><Link to="/"><img src={logo} className={styles.navLogo} alt="Logo"/></Link></div>
             <ul className={styles.navLinks}>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/search">Search</Link></li>
                 {permissions.canCreate && <li><Link to="/create">Create</Link></li>}
                 <li><Link to="/treeview">Tree</Link></li>
-                <li><Link to="/login">{user ? "Logout" : "Login"}</Link></li>
-                {!user && <li><Link to="/register">Register</Link></li>}
+                <div className={styles.navbarRight}>
+                    <li><Link to="/login">{user ? "Logout" : "Login"}</Link></li>
+                    {!user && <li><Link to="/register">Register</Link></li>}
+                </div>
             </ul>
         </nav>
     );
