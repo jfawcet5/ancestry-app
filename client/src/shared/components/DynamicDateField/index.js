@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import styles from "./DynamicDateField.module.css";
 
-/*
+
 const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
     "Sep", "Oct", "Nov", "Dec"
 ];
-*/
 
 
 
@@ -60,9 +59,9 @@ export default function DynamicDateField({value = "",
         else {
             return (
                 <div>
+                    {dateFields.month && <span>{months[dateFields.month - 1]} </span>}
+                    {dateFields.day && <span>{dateFields.day}, </span>}
                     <span>{dateFields.year}</span>
-                    {dateFields.month && <span>/{dateFields.month}</span>}
-                    {dateFields.day && <span>/{dateFields.day}</span>}
                 </div>
             )
         }
