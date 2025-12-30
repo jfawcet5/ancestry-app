@@ -1,29 +1,16 @@
 import { useAuthentication } from "../features/security/authContext";
 
 //const ENDPOINT = process.env.REACT_APP_API_URL;
-
-function GenerateCodeVerifier() {
-    const array = new Uint8Array(56);
-    crypto.getRandomValues(array);
-
-    return btoa(String.fromCharCode(...array))
-        .replace(/\+/g, "-")
-        .replace(/\//g, "-")
-        .replace(/=+$/, "");
-}
+import { GenerateCodeVerifier, CreateCodeChallenge } from "../features/security/encoding.js";
 
 function LoginButton() {
+    console.log("Login button");
     const codeVerifier = GenerateCodeVerifier();
     sessionStorage.setItem("pkce_verifier", codeVerifier);
+    console.log("Code Verifier: ", codeVerifier);
 
-    const encoder = new TextEncoder();
-    const data = encoder.encode(codeVerifier);
-    const hash = window.crypto.subtle.digest("SHA-256", data);
-    hash.then(h => {
-        const codeChallenge = btoa(String.fromCharCode(...new Uint8Array(h)))
-            .replace(/\+/g, "-")
-            .replace(/\//g, "-")
-            .replace(/=+$/, "");
+    const challengePromise = CreateCodeChallenge(codeVerifier);
+    challengePromise.then(challenge => {
         
         const state = btoa(JSON.stringify({
             flow: "login",
@@ -36,7 +23,7 @@ function LoginButton() {
             redirect_uri: window.location.origin + process.env.REACT_APP_PUBLIC_URL,
             scope: "openid profile email",
             screen_hint: "login",
-            code_challenge: codeChallenge,
+            code_challenge: challenge,
             code_challenge_method: "S256",
             state
         });
@@ -45,10 +32,10 @@ function LoginButton() {
             type: "login"
         }));
 
-        console.log("Before Redirect");
-        console.log("verifier: ", codeVerifier);
-        console.log("redirect: ", window.location.origin + process.env.REACT_APP_PUBLIC_URL);
-        console.log("client id: ", process.env.REACT_APP_AUTH0_CLIENT_ID);
+        console.log("Redirect");
+        //console.log("verifier: ", codeVerifier);
+        //console.log("redirect: ", window.location.origin + process.env.REACT_APP_PUBLIC_URL);
+        //console.log("client id: ", process.env.REACT_APP_AUTH0_CLIENT_ID);
 
         window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/authorize?${params}`;
     })

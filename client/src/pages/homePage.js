@@ -26,11 +26,11 @@ function HomePage() {
             console.log("No code provided");
             return;
         }
-        console.log("Read code: ", code);
+        //console.log("Returned Code: ", code);
     
         const verifier = sessionStorage.getItem("pkce_verifier");
         sessionStorage.removeItem("pkce_verifier");
-        console.log("Read verifier: ", verifier);
+        //console.log("Using verifier: ", verifier);
     
         if (!verifier) {
             console.log("No verifier");

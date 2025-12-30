@@ -1,27 +1,7 @@
 import { useState } from "react";
+import { GenerateCodeVerifier, CreateCodeChallenge } from "../features/security/encoding.js";
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
-
-function GenerateCodeVerifier() {
-    const array = new Uint8Array(56);
-    crypto.getRandomValues(array);
-
-    return btoa(String.fromCharCode(...array))
-        .replace(/\+/g, "-")
-        .replace(/\//g, "-")
-        .replace(/=+$/, "");
-}
-
-function GetVerifierHash() {
-    const codeVerifier = GenerateCodeVerifier();
-    sessionStorage.setItem("pkce_verifier", codeVerifier);
-
-    const encoder = new TextEncoder();
-    const data = encoder.encode(codeVerifier);
-    const hash = crypto.subtle.digest("SHA-256", data);
-    return hash;
-}
-
 
 export default function RegisterPage() {
     const [invite, setInvite] = useState("");
@@ -29,14 +9,12 @@ export default function RegisterPage() {
     const handleLogin = (e) => {
         e.preventDefault();
         console.log("register new user");
-
-        const verifierHash = GetVerifierHash();
-
-        verifierHash.then(h => {
-            const codeChallenge = btoa(String.fromCharCode(...new Uint8Array(h)))
-            .replace(/\+/g, "-")
-            .replace(/\//g, "-")
-            .replace(/=+$/, "");
+        const codeVerifier = GenerateCodeVerifier();
+        sessionStorage.setItem("pkce_verifier", codeVerifier);
+        console.log("Code Verifier: ", codeVerifier);
+    
+        const challengePromise = CreateCodeChallenge(codeVerifier);
+        challengePromise.then(challenge => {
         
             const state = btoa(JSON.stringify({
                 flow: "signup",
@@ -50,7 +28,7 @@ export default function RegisterPage() {
                 redirect_uri: window.location.origin + process.env.REACT_APP_PUBLIC_URL,
                 scope: "openid profile email",
                 screen_hint: "signup",
-                code_challenge: codeChallenge,
+                code_challenge: challenge,
                 code_challenge_method: "S256",
                 state
             });

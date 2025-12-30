@@ -95,25 +95,42 @@ const handleOAuthTokenExchange = (dataModel) => (req, res, next) => {
     logger.debug(JSON.stringify(req.body));
     const {code, codeVerifier, flow} = req.body;
 
+    const params = new URLSearchParams({
+        grant_type: "authorization_code",
+        client_id: config.AUTH0_CLIENT_ID,
+        code_verifier: codeVerifier,
+        code: code,
+        scope: "openid profile",
+        redirect_uri: config.AUTH0_REDIRECT,
+    })
+
     // Request body for Auth0 API call
     const reqBody = {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            grant_type: "authorization_code",
-            client_id: config.AUTH0_CLIENT_ID,
-            code,
-            redirect_uri: config.AUTH0_REDIRECT,
-            code_verifier: codeVerifier
-        })
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
     };
 
     logger.debug("Token exchange payload", JSON.stringify(reqBody));
 
     // PKCE token exchange
     fetch(`https://${config.AUTH0_DOMAIN}/oauth/token`, reqBody)
-    .then(res => res.json()).then(tokenData => {
-        logger.debug("OAuth raw token data", JSON.stringify(tokenData));
+    .then(res => {
+        logger.debug("Raw Auth0 response:");
+        console.log(res);
+        if (res.status !== 200) {
+            logger.error(" Unsuccessful Token Exchange", res.status);
+            return res.json().then(data => {
+                throw new Error(data.error);
+            })
+        }
+        return res.json();
+    })
+    .then(tokenData => {
+        if (!tokenData.id_token) {
+            logger.error("No id token provided", JSON.stringify(tokenData))
+            throw new Error("Error: Authentication failed.");
+        }
 
         const idToken = JSON.parse(
             Buffer.from(tokenData.id_token.split(".")[1], "base64")
@@ -165,6 +182,7 @@ const handleOAuthTokenExchange = (dataModel) => (req, res, next) => {
                 res.json({
                     token: token
                 });
+                logger.debug("Exit AuthenticationController.handleOAuthTokenExchange");
             })
             .catch(error => {
                 logger.error("Failed to create new user", error.message);
@@ -183,18 +201,13 @@ const handleOAuthTokenExchange = (dataModel) => (req, res, next) => {
                 res.json({
                     token: token
                 });
+                logger.debug("Exit AuthenticationController.handleOAuthTokenExchange");
             })
             .catch(error => {
-                logger.error("Failed to create new user", error.message);
+                logger.error("Failed to authenticate user", error.message);
             });
             return;
         }
-
-        res.json({
-            token: {
-                oauthUserId
-            }
-        });
     })
     .catch(error => {
         logger.error("OAuth Token Exchange Failed", error.message);
@@ -208,7 +221,7 @@ const handleOAuthTokenExchange = (dataModel) => (req, res, next) => {
 
         //saveJsonPayload(response, "createNewPerson_output");
         sendResponse(res, 500, response);
-        logger.debug("Exit AuthenticationController.getApplicationUser");
+        logger.debug("Exit AuthenticationController.handleOAuthTokenExchange");
     })
 }
 
