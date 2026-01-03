@@ -29,7 +29,7 @@ function HomePage() {
         //console.log("Returned Code: ", code);
     
         const verifier = sessionStorage.getItem("pkce_verifier");
-        sessionStorage.removeItem("pkce_verifier");
+        //sessionStorage.removeItem("pkce_verifier");
         //console.log("Using verifier: ", verifier);
     
         if (!verifier) {

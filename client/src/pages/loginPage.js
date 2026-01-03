@@ -23,6 +23,7 @@ function LoginButton() {
             redirect_uri: window.location.origin + process.env.REACT_APP_PUBLIC_URL,
             scope: "openid profile email",
             screen_hint: "login",
+            prompt: "login",
             code_challenge: challenge,
             code_challenge_method: "S256",
             state
@@ -32,7 +33,7 @@ function LoginButton() {
             type: "login"
         }));
 
-        console.log("Redirect");
+        //console.log("Redirect");
         //console.log("verifier: ", codeVerifier);
         //console.log("redirect: ", window.location.origin + process.env.REACT_APP_PUBLIC_URL);
         //console.log("client id: ", process.env.REACT_APP_AUTH0_CLIENT_ID);
