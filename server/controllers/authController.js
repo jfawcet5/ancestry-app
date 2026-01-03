@@ -104,6 +104,8 @@ const handleOAuthTokenExchange = (dataModel) => (req, res, next) => {
         redirect_uri: config.AUTH0_REDIRECT,
     })
 
+    logger.debug("Auth0 exchange parameters: ", params.toString());
+
     // Request body for Auth0 API call
     const reqBody = {
         method: "POST",

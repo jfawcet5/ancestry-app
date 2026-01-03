@@ -26,7 +26,7 @@ export default function SearchPersonPresentation({searchResults,
         else {
             resultsList = searchResults.map(person => (
                 <li key={person.id}>
-                    <Link to={`/people/${person.id}`}>{`${person.name.first} ${person.name.last}`}</Link>
+                    <Link to={`/people/${person.id}`}>{`${person.name.first} ${person.name.middle && person.name.middle[0]} ${person.name.last}`}</Link>
                 </li>
             ));
         }

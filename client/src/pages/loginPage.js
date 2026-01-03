@@ -7,7 +7,7 @@ function LoginButton() {
     console.log("Login button");
     const codeVerifier = GenerateCodeVerifier();
     sessionStorage.setItem("pkce_verifier", codeVerifier);
-    console.log("Code Verifier: ", codeVerifier);
+    //console.log("Code Verifier: ", codeVerifier);
 
     const challengePromise = CreateCodeChallenge(codeVerifier);
     challengePromise.then(challenge => {

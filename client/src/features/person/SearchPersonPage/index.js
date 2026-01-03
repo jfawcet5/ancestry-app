@@ -45,7 +45,7 @@ export default function SearchPersonPage({pageType = "page", onSelect}) {
                 if (pageType === "modal") {
                     setSearchResults(jsonData.data.map((item) => ({
                         id: item.id,
-                        name: `${item.name.first} ${item.name.last}`
+                        name: `${item.name.first} ${item.name.middle && item.name.middle[0]} ${item.name.last}`
                     })));
                     console.log(searchResults);
                 }
