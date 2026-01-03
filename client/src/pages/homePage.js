@@ -70,7 +70,7 @@ function HomePage() {
             console.log("finally: reset auth state");
             sessionStorage.removeItem("pkce_verifier");
             sessionStorage.removeItem("authFlow");
-            window.history.replaceState({}, "", "/");
+            window.history.replaceState({}, "", process.env.REACT_APP_PUBLIC_URL);
         })
     }, [setUser, setToken, code]);
 
