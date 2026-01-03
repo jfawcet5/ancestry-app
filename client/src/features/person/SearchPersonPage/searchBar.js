@@ -43,7 +43,7 @@ export default function SearchBar({onSetSearchResults, children}) {
                 //console.log(jsonData);
                 onSetSearchResults(jsonData.data.map((item) => ({
                     id: item.id,
-                    name: `${item.name.first} ${item.name.last}`
+                    name: `${item.name.first} ${item.name.middle && item.name.middle[0]} ${item.name.last}`
                 })));
             })
             .catch((error) => {
