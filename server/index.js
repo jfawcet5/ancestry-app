@@ -14,7 +14,7 @@ const app = express();
 
 app.use((req, res, next) => {
 	logger.info("Incoming request", `${req.method} ${req.url}`);
-	logger.debug("request payload", JSON.stringify(req));
+	logger.debug("request payload", req);
 	logger.debug("allowed", config.CLIENT_URL);
 	next();
 })
