@@ -5,6 +5,7 @@ import { GenerateCodeVerifier, CreateCodeChallenge } from "../features/security/
 
 function LoginButton() {
     console.log("Login button");
+    sessionStorage.clear();
     const codeVerifier = GenerateCodeVerifier();
     sessionStorage.setItem("pkce_verifier", codeVerifier);
     //console.log("Code Verifier: ", codeVerifier);
@@ -14,7 +15,7 @@ function LoginButton() {
         
         const state = btoa(JSON.stringify({
             flow: "login",
-            redirect: "/"
+            redirect: process.env.REACT_APP_PUBLIC_URL
         }));
 
         const params = new URLSearchParams({
@@ -26,7 +27,8 @@ function LoginButton() {
             prompt: "login",
             code_challenge: challenge,
             code_challenge_method: "S256",
-            state
+            state,
+            max_age: 0
         });
 
         sessionStorage.setItem("authFlow", JSON.stringify({
@@ -46,7 +48,7 @@ function LoginButton() {
 function LogoutButton() {
     const params = new URLSearchParams({
         client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
-        returnTo: window.location.origin + process.env.REACT_APP_PUBLIC_URL,
+        returnTo: window.location.origin + process.env.REACT_APP_PUBLIC_URL
     });
 
     console.log("returnTo", window.location.origin + process.env.REACT_APP_PUBLIC_URL);

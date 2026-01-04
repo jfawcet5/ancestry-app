@@ -4,6 +4,7 @@ import logo from '../assets/test1.svg';
 //import background from "../assets/background.png";
 
 import { useAuthentication } from '../features/security/authContext';
+import { logout } from '../features/security/authentication';
 
 const ENDPOINT = process.env.REACT_APP_API_URL;
 
@@ -37,6 +38,8 @@ function HomePage() {
             return;
         }
 
+        sessionStorage.removeItem("pkce_verifier");
+
         const authFlow = sessionStorage.getItem("authFlow");
 
         if (!authFlow) {
@@ -65,6 +68,7 @@ function HomePage() {
         })
         .catch(error => {
             console.error("Auth flow FAILED: ", error.message);
+            logout();
         })
         .finally(() => {
             console.log("finally: reset auth state");
