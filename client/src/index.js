@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthenticationProvider } from './features/security/authContext';
+import LoaderProvider from './features/async/loaderProvider';
+import NotificationProvider from './features/notification/notificationProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -11,7 +13,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthenticationProvider>
-      <App />
+      <LoaderProvider>
+        <NotificationProvider>
+          <App />
+        </NotificationProvider>
+      </LoaderProvider>
     </AuthenticationProvider>
   </React.StrictMode>
 );

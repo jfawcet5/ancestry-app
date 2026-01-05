@@ -13,11 +13,20 @@
 
 .content {
     background-color: white;
-    min-width: 35rem;
-    max-width: 90%;
     max-height: 90%;
     overflow-y: auto;
     border-radius: 0.75rem
+}
+
+.wide {
+    min-width: 35rem;
+    max-width: 90%;
+}
+
+.narrow {
+    min-width: 20rem;
+    /* width: 100rem; */
+    max-width: 50%;
 }
 
 .header {

@@ -21,25 +21,37 @@ import background from "./assets/background2.png";
 //const ENDPOINT = process.env.REACT_APP_API_URL;
 
 function App() {
+
   return (
-    <Router>
-      <Navbar />
-      <img src={background} className='background' alt="logo"/>
-      <PageLayout>
-        <Routes>
-          <Route path="/" element={<HomePage />}/>
-          <Route path="/ancestry-app" element={<HomePage />}/>
-          <Route path="/search" element={<SearchPersonPage />}/>
-          <Route path="/people/:id" element={<ViewPersonPage />}/>
-          <Route path="/create" element={<CreatePersonPage />}/>
-          <Route path="/treeview" element={<ViewTreePage />}/>
-          <Route path="/treeview/:id" element={<ViewTreePage />}/>
-          <Route path="/login" element={<LoginPage />}/>
-          <Route path="/register" element={<RegisterPage />}/>
-        </Routes>
-      </PageLayout>
-    </Router>
+    <>
+      <Router>
+        <Navbar />
+        <img src={background} className='background' alt="logo"/>
+        <PageLayout>
+          <Routes>
+            <Route path="/" element={<HomePage />}/>
+            <Route path="/ancestry-app" element={<HomePage />}/>
+            <Route path="/search" element={<SearchPersonPage />}/>
+            <Route path="/people/:id" element={<ViewPersonPage />}/>
+            <Route path="/create" element={<CreatePersonPage />}/>
+            <Route path="/treeview" element={<ViewTreePage />}/>
+            <Route path="/treeview/:id" element={<ViewTreePage />}/>
+            <Route path="/login" element={<LoginPage />}/>
+            <Route path="/register" element={<RegisterPage />}/>
+          </Routes>
+        </PageLayout>
+      </Router>
+    </>
   );
 }
 
 export default App;
+
+
+/*
+      <PopupModal label="Loading..." isOpen={true} size="narrow">
+        <br />
+        <div className="loader-spinner"/>
+        <p>Test Loader</p>
+      </PopupModal> 
+*/

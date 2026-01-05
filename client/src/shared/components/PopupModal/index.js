@@ -4,7 +4,8 @@ import styles from "./styles.module.css";
 export default function PopupModal({isOpen,
                                     onClose,
                                     label,
-                                    children
+                                    children,
+                                    size = "wide"
 }) {
     const modalRef = useRef();
 
@@ -13,7 +14,9 @@ export default function PopupModal({isOpen,
         console.log("Handle Outside Click");
         if (modalRef.current && !modalRef.current.contains(e.target)) {
             console.log("calling on close function");
-            onClose();
+            if (onClose) {
+                onClose();
+            }
         }
         e.stopPropagation();
     }
@@ -43,12 +46,15 @@ export default function PopupModal({isOpen,
         return null;
     };
 
+    const temp = size === "wide" ? styles.wide : styles.narrow;
+    const contentStyle = `${styles.content} ${temp}`;
+
     return (
         <div className={styles.container} onClick={handleOutsideClick}>
-            <div className={styles.content} ref={modalRef} onClick={handleInsideClick}>
+            <div className={contentStyle} ref={modalRef} onClick={handleInsideClick}>
                 <div className={styles.header}>
                     <h3>{label}</h3>
-                    <div onClick={onClose} className={styles.closeButton}>X</div>
+                    {onClose && <div onClick={onClose} className={styles.closeButton}>X</div>}
                 </div>
                 
                 <div className={styles.body}>{children}</div>
