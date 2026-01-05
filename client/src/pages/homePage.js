@@ -32,7 +32,7 @@ function HomePage() {
             console.log("No code provided");
             return;
         }
-        //console.log("Returned Code: ", code);
+        //console.log("Auth0 Code: ", code);
     
         const verifier = sessionStorage.getItem("pkce_verifier");
         //sessionStorage.removeItem("pkce_verifier");
@@ -68,7 +68,13 @@ function HomePage() {
 
         //requestPromise.then(res => res.json())
         executeWithLoader(apiOperation, "Authenticating...")
+            .then(response => {
+                //console.log("Api call returned");
+                //console.log(response);
+                return response.json();
+            })
             .then(data => {
+                //console.log("json response: ", JSON.stringify(data));
                 console.log("APP TOKEN: ", data.token);
                 const userData = JSON.parse(atob(data.token.split(".")[1]));
                 setUser(userData); // Store user data in memory for later user (access control, refresh, etc.)
@@ -76,6 +82,7 @@ function HomePage() {
             })
             .catch(error => {
                 console.error("Auth flow FAILED: ", error.message);
+                console.log(error);
                 showError({
                     title: "Login didn't work.",
                     message: "This can happen occasionally. Please try again in a few minutes."

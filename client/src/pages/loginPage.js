@@ -31,6 +31,8 @@ function LoginButton() {
             max_age: 0
         });
 
+        //console.log("Login params: ", params.toString());
+
         sessionStorage.setItem("authFlow", JSON.stringify({
             type: "login"
         }));
@@ -41,7 +43,7 @@ function LoginButton() {
         //console.log("client id: ", process.env.REACT_APP_AUTH0_CLIENT_ID);
 
         window.location.href = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/authorize?${params}`;
-    })
+    });
 }
 
 
